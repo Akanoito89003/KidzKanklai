@@ -66,7 +66,7 @@ func main() {
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
 		// Default to the previous Supabase URL for convenience (User can change this)
-		connStr = "postgresql://postgres.cwwksrwalgbiakvsvngj:KidzKanklai_3K@aws-1-us-east-2.pooler.supabase.com:6543/postgres"
+		connStr = "postgresql://postgres:password123@localhost:5432/kidzkanklai?sslmode=disable"
 		log.Println("⚠️ Warning: Using default connection string.")
 	}
 
