@@ -36,7 +36,7 @@
     *   หาหัวข้อ **Connection string** -> เลือกแถบ `URI` หรือ `Golang`
     *   Copy ข้อความมา
 
-2.  **แก้ไขโค้ดใน `main.go`**:
+2.  **แก้ไขโค้ดใน `config/database.go`**:
     *   หาบรรทัด `connStr` แล้วเปลี่ยนเป็น Link ของ Supabase
     *   **ตัวอย่าง:**
     ```go
@@ -54,10 +54,10 @@
 ---
 
 ### 3. ตั้งค่าการเชื่อมต่อในโค้ด ⚠️ (สำคัญมาก)
-เปิดไฟล์ **`main.go`** และค้นหาบรรทัดที่กำหนดตัวแปร `connStr`:
+เปิดไฟล์ **`config/database.go`** และค้นหาบรรทัดที่กำหนดตัวแปร `connStr`:
 
 ```go
-// ไฟล์ main.go บรรทัดประมาณ 69
+// ไฟล์ config/database.go
 connStr = "postgresql://postgres:password123@localhost:5432/kidzkanklai?sslmode=disable"
 ```
 
