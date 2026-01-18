@@ -16,18 +16,18 @@ func InitDB() {
 	if connStr == "" {
 		// Default to the previous Supabase URL for convenience (User can change this)
 		connStr = "postgresql://postgres:password123@localhost:5432/kidzkanklai?sslmode=disable"
-		log.Println("⚠️ Warning: Using default connection string.")
+		log.Println("[WARN] Warning: Using default connection string.")
 	}
 
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal("❌ Database connection failed:", err)
+		log.Fatal("[ERROR] Database connection failed:", err)
 	}
 
 	if err = DB.Ping(); err != nil {
-		log.Println("⚠️ Could not ping database:", err)
+		log.Println("[WARN] Could not ping database:", err)
 	} else {
-		log.Println("✅ Connected to Database!")
+		log.Println("[INFO] Connected to Database!")
 	}
 }
 
@@ -63,9 +63,9 @@ func CreateTables() {
 	`
 	_, err := DB.Exec(query)
 	if err != nil {
-		log.Println("⚠️ Migration failed:", err)
+		log.Println("[WARN] Migration failed:", err)
 	} else {
-		log.Println("✅ Database tables checked/created.")
+		log.Println("[INFO] Database tables checked/created.")
 	}
 }
 
@@ -73,20 +73,20 @@ func SeedDatabase() {
 	var count int
 	err := DB.QueryRow("SELECT COUNT(*) FROM users").Scan(&count)
 	if err != nil {
-		log.Println("⚠️ Error checking users:", err)
+		log.Println("[WARN] Error checking users:", err)
 		return
 	}
 
 	if count == 0 {
-		log.Println("🌱 Seeding database with default user...")
+		log.Println("[INFO] Seeding database with default user...")
 		_, err = DB.Exec(`
 			INSERT INTO users (username, email, password, level, coins, exp, tickets, vouchers, equipped_skin, equipped_hair, equipped_face) 
 			VALUES ('Tester', 'test@example.com', 'password123', 5, 1000, 500, 10, 5, 'basic_uniform', 'default_blue', 'happy')
 		`)
 		if err != nil {
-			log.Println("❌ Failed to seed user:", err)
+			log.Println("[ERROR] Failed to seed user:", err)
 		} else {
-			log.Println("✅ Default user created: test@example.com / password123")
+			log.Println("[INFO] Default user created: test@example.com / password123")
 		}
 	}
 }
