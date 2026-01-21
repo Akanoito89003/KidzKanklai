@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
+import 'screens/login.dart';
+import 'screens/register.dart';
+import 'screens/forgotpw.dart';
+import 'screens/resetpw.dart';
 import 'screens/lobby_screen.dart';
 import 'screens/fashion_screen.dart';
 import 'screens/settings_screen.dart';
@@ -13,6 +15,7 @@ import 'screens/achievement_screen.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
+import 'screens/test.dart';
 
 void main() {
   runApp(const KidzKanklaiApp());
@@ -33,8 +36,11 @@ class KidzKanklaiApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
+        '/test': (context) => const TestPage(),
+        '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
+        '/forgotpw': (context) => const ForgotPWPage(),
+        '/resetpw': (context) => const ResetPWPage(),
         '/lobby': (context) => LobbyScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
