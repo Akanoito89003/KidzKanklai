@@ -16,6 +16,8 @@ import 'screens/achievement_screen.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
+import 'package:kidz_kanklai/frontend/setting_login.dart';
+import 'package:kidz_kanklai/frontend/setting_logout.dart';
 import 'screens/test.dart';
 
 void main() {

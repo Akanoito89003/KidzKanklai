@@ -3,6 +3,8 @@ import 'login.dart';
 import 'register.dart';
 import 'forgotpw.dart';
 import 'resetpw.dart';
+import 'setting_login.dart';
+import 'setting_logout.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
@@ -101,6 +103,40 @@ class _TestPageState extends State<TestPage> {
                         },
                         child: Text(
                           "หน้ารีเซ็ตรหัสผ่าน",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SettingLoginPage()),
+                          );
+                        },
+                        child: Text(
+                          "หน้าตั้งค่า-login",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SettingLogoutPage()),
+                          );
+                        },
+                        child: Text(
+                          "หน้าตั้งค่า-logout",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
