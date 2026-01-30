@@ -38,7 +38,7 @@ class LevelRingPainter extends CustomPainter {
 
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      2.8 / 2, // เริ่มจากด้านล่าง
+      2.6 / 2, // เริ่มจากด้านล่าง
       sweepAngle,
       false,
       progressPaint,
@@ -106,18 +106,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
           Positioned(
             left: 0,
             bottom: 0,
-            child: Image.asset(
-              "lib/assets/star-1.png",
-
-            ),
+            child: Image.asset("lib/assets/star-1.png"),
           ),
 
           Positioned(
             right: 0,
             bottom: 0,
-            child: Image.asset(
-              "lib/assets/star-2.png",
-            ),
+            child: Image.asset("lib/assets/star-2.png"),
           ),
 
           // Content button
@@ -217,43 +212,40 @@ class CustomBottomNavigationBar extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
-                      border: Border.all(
-                        color: Colors.grey.shade200,
-                        width: 3,
-                      ),
+                      border: Border.all(color: Colors.grey.shade200, width: 3),
                     ),
                     child: ClipOval(
                       child: avatarUrl != null
                           ? Image.network(
-                        avatarUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'lib/assets/profile_img.png',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return _buildDefaultAvatar();
-                            },
-                          );
-                        },
-                      )
+                              avatarUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'lib/assets/profile_img.png',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return _buildDefaultAvatar();
+                                  },
+                                );
+                              },
+                            )
                           : Image.asset(
-                        'lib/assets/profile_img.png',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return _buildDefaultAvatar();
-                        },
-                      ),
+                              'lib/assets/profile_img.png',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return _buildDefaultAvatar();
+                              },
+                            ),
                     ),
                   ),
 
                   // Level Badge (ล่างขวา)
                   Positioned(
+                    left: 55,
                     right: 0,
-                    bottom: 5,
+                    bottom: 6,
                     child: Container(
-                      width: 32, // เพิ่มขนาด badge
-                      height: 32,
+                      width: 35,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white,
@@ -275,18 +267,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
                           Text(
                             '$playerLevel',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF313131),
+                              height: 1.0,
                             ),
                           ),
                           Text(
-                            'Lv.',
-                            style: TextStyle(
-                              fontSize: 7,
-                              color: Color(0xFF313131),
-                            ),
-                          ),
+                                'Lv.',
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF313131),
+                                  height: 0.9,
+                                ),
+                              ),
                         ],
                       ),
                     ),
@@ -306,17 +301,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF87CEEB),
-            Color(0xFF4A90E2),
-          ],
+          colors: [Color(0xFF87CEEB), Color(0xFF4A90E2)],
         ),
       ),
-      child: Icon(
-        Icons.person,
-        color: Colors.white,
-        size: 40,
-      ),
+      child: Icon(Icons.person, color: Colors.white, size: 40),
     );
   }
 
@@ -352,23 +340,20 @@ class CustomBottomNavigationBar extends StatelessWidget {
                     shape: BoxShape.circle,
                     gradient: isSelected
                         ? LinearGradient(
-                      colors: [
-                        Color(0xFF75C6EA),
-                        Color(0xFFCEFFB2),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    )
+                            colors: [Color(0xFF75C6EA), Color(0xFFCEFFB2)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
                         : null,
                     color: !isSelected ? Colors.white.withOpacity(0.8) : null,
                     boxShadow: isSelected
                         ? [
-                      BoxShadow(
-                        color: Color(0xFF000000).withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: Offset(0, 3),
-                      ),
-                    ]
+                            BoxShadow(
+                              color: Color(0xFF000000).withOpacity(0.3),
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ]
                         : [],
                   ),
                   child: Container(
@@ -402,7 +387,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     color: Color(0xFF000000),
                   ),
                   textAlign: TextAlign.center,
