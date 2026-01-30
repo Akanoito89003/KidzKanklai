@@ -13,6 +13,7 @@ import 'screens/achievement_screen.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const KidzKanklaiApp());
@@ -28,10 +29,10 @@ class KidzKanklaiApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        fontFamily: 'Roboto',
+        textTheme: GoogleFonts.kanitTextTheme(),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      initialRoute: '/lobby',
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
