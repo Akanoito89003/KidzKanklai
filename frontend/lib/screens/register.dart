@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -88,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           Text(
                             "สวัสดีสมาชิกใหม่!",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -96,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SizedBox(height: 10),
                           Text(
                             "ลงทะเบียน",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -216,7 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               child: Text(
                                 "ลงทะเบียน",
-                                style: GoogleFonts.josefinSans(
+                                style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -251,7 +250,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   const SizedBox(width: 12),
                                   Text(
                                     "เข้าสู่ระบบผ่าน Google",
-                                    style: GoogleFonts.josefinSans(
+                                    style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -281,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         child: Text(
                           "มีบัญชีอยู่แล้ว",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

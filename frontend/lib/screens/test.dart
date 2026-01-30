@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 import 'register.dart';
 import 'forgotpw.dart';
@@ -50,7 +49,7 @@ class _TestPageState extends State<TestPage> {
                         },
                         child: Text(
                           "หน้าเข้าสู่ระบบ",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -68,7 +67,7 @@ class _TestPageState extends State<TestPage> {
                         },
                         child: Text(
                           "หน้าสร้างบัญชี",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -85,7 +84,7 @@ class _TestPageState extends State<TestPage> {
                         },
                         child: Text(
                           "หน้าลืมรหัสผ่าน(OTP)",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -102,7 +101,7 @@ class _TestPageState extends State<TestPage> {
                         },
                         child: Text(
                           "หน้ารีเซ็ตรหัสผ่าน",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -127,7 +126,7 @@ class _TestPageState extends State<TestPage> {
                             ),
                             child: Text(
                               "ออกจากระบบ",
-                              style: GoogleFonts.josefinSans(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/login.dart';
 import 'screens/register.dart';
 import 'screens/forgotpw.dart';
@@ -30,8 +31,8 @@ class KidzKanklaiApp extends StatelessWidget {
       title: 'KidzKanklai',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Roboto',
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textTheme: GoogleFonts.kanitTextTheme(),
         useMaterial3: true,
       ),
       initialRoute: '/login',

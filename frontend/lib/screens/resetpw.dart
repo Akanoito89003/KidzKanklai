@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
 
 
@@ -87,7 +86,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
                           const SizedBox(height: 20),
                           Text(
                             "รีเซ็ตรหัสผ่าน",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -176,7 +175,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
                               ),
                               child: Text(
                                 "ยืนยัน",
-                                style: GoogleFonts.josefinSans(
+                                style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -206,7 +205,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
                         },
                         child: Text(
                           "กลับไปหน้าเข้าสู่ระบบ",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

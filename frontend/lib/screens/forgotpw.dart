@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'register.dart';
 import 'login.dart';
 
@@ -88,7 +87,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                           const SizedBox(height: 20),
                           Text(
                             "ลืมรหัสผ่าน",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -151,7 +150,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                                   ),
                                   child: Text(
                                     "ขอรหัส",
-                                    style: GoogleFonts.josefinSans(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -176,7 +175,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                                 },
                                 child: Text(
                                   "ยังไม่ได้รับรหัสใช่ไหม?",
-                                  style: GoogleFonts.josefinSans(color: primaryColor),
+                                  style: TextStyle(color: primaryColor),
                                 ),
                               ),
                             ),
@@ -201,7 +200,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                               ),
                               child: Text(
                                 "รีเซ็ตรหัสผ่าน",
-                                style: GoogleFonts.josefinSans(
+                                style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -228,7 +227,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         },
                         child: Text(
                           "สร้างบัญชีใหม่",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -241,7 +240,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                       // Divider
                       Text(
                         "|",
-                        style: GoogleFonts.josefinSans(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                         ),
@@ -257,7 +256,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         },
                         child: Text(
                           "กลับไปหน้าเข้าสู่ระบบ",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

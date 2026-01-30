@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'register.dart';
 import 'forgotpw.dart';
 
@@ -86,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           Text(
                             "ยินดีต้อนรับกลับสู่ห้องเรียน",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
                             ),
@@ -94,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 20),
                           Text(
                             "เข้าสู่ระบบ",
-                            style: GoogleFonts.josefinSans(
+                            style: TextStyle(
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -158,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 "ลืมรหัสผ่านใช่ไหม?",
-                                style: GoogleFonts.josefinSans(color: primaryColor),
+                                style: TextStyle(color: primaryColor),
                               ),
                             ),
                           ),
@@ -182,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               child: Text(
                                 "เข้าสู่ระบบ",
-                                style: GoogleFonts.josefinSans(
+                                style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -217,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(width: 12),
                                   Text(
                                     "เข้าสู่ระบบผ่าน Google",
-                                    style: GoogleFonts.josefinSans(
+                                    style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -246,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Text(
                           "สร้างบัญชีใหม่",
-                          style: GoogleFonts.josefinSans(
+                          style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
