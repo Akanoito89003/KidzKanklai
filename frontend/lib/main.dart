@@ -26,8 +26,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: '',
-    anonKey: '',
+    url: 'https://dregaeeryyqlfssejzbr.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyZWdhZWVyeXlxbGZzc2VqemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0NjAzMzgsImV4cCI6MjA4NDAzNjMzOH0.QEyCrkki7K-RgaejMTdYsx-N-dt87Qi1LjJSZ4VFNLw',
     authOptions: const FlutterAuthClientOptions(
       authFlowType: AuthFlowType.pkce, // 🔥 สำคัญสำหรับ Google OAuth
     ),

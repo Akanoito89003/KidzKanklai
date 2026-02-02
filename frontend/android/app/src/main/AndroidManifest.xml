@@ -34,6 +34,14 @@
                 <data android:scheme="io.supabase.flutter" android:host="login-callback" />
             </intent-filter>
 
+            // Supabase intent filter for password reset
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="io.supabase.flutter" android:host="reset-callback" />
+            </intent-filter>
+
         </activity>
         
         <meta-data
