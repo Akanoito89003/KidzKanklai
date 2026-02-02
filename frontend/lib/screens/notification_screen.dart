@@ -38,27 +38,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         NotificationItem(
           id: '2',
-          imagePath: 'lib/assets/quest_1_icon.png',
+          imagePath: 'lib/assets/acheivement_icon.png',
           title: 'ปลดล็อกความสำเร็จใหม่',
           description:
-              'ยินดีด้วย! คุณปลดล็อก "นักพัฒนาแห่ง เส้น สามอย่างแนบเคียง...',
+              'ยินดีด้วย! คุณปลดล็อก "นักวางแผนมือใหม่" แล้ว อย่าลืมเข้าไปรับ...',
           timestamp: '5 ชั่วโมงที่แล้ว',
           isRead: false,
         ),
         NotificationItem(
           id: '3',
-          imagePath: 'lib/assets/quest_1_icon.png',
-          title: 'ภารกิจในงานมัธยม',
+          imagePath: 'lib/assets/club_1_icon.png',
+          title: 'ภารกิจใหม่จากชมรม',
           description:
-              'ความสามารถแล้วทำ! "เหลงสามูสถาน" เกิ้นในทีมที่ทคล้อง 200...',
+              'หัวหน้าชมรมได้สร้าง “เควสติวหนังสือ” เข้าไปทำเพื่อรับ 200...',
           timestamp: '7 ชั่วโมงที่แล้ว',
           isRead: false,
         ),
         NotificationItem(
           id: '4',
-          imagePath: 'lib/assets/quest_1_icon.png',
+          imagePath: 'lib/assets/exam_icon.png',
           title: 'คุณพร้อมสอบแล้ว!',
-          description: 'คำนวณการจองครอบกุลที่พีใหญ่ คณะสมารถที่ช่วยตัตถิพ...',
+          description: 'ค่าความสามารถของคุณถึงเกณฑ์แล้ว คุณสามารถใช้สิทธิเข้า...',
           timestamp: '5 ชั่วโมงที่แล้ว',
           isRead: false,
         ),
@@ -92,17 +92,17 @@ Widget build(BuildContext context) {
                     width: 3,
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: Column(
                   children: [
                     const SizedBox(height: 40),
 
                     // Progress
                     Text(
-                      'อ่านแล้ว 4/100',
+                      'จำนวน 4/100',
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
 
@@ -318,7 +318,7 @@ Widget _buildNotificationCard(BuildContext context, NotificationItem item) {
 
         const SizedBox(width: 12),
 
-        // TEXT
+        // Text
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
