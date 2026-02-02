@@ -71,6 +71,10 @@ flutter:
     - lib/assets/profile_img.png
     - lib/assets/star-1.png
     - lib/assets/star-2.png
+    - lib/assets/bt-Back.png
+    - lib/assets/bt-hover-Back.png
+    - lib/assets/BG.png
+    - lib/assets/quest_1_icon.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

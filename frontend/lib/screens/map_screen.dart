@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/bottom_navigation_bar.dart';
-import '../widgets/right_side_menu.dart';
 import '../widgets/custom_top_bar.dart';
 import '../api_service.dart';
 
@@ -17,9 +16,9 @@ class _MapScreenState extends State<MapScreen> {
   int _selectedIndex = 2; // Map = index 2
 
   final List<String> _menuItems = [
-    'ภารกิจ',
-    'ร้านค้า',
-    'เพื่อน',
+    'สนามสอบ1',
+    'สนามสอบ2',
+    'สนามสอบ3',
   ];
 
   @override
@@ -28,7 +27,7 @@ class _MapScreenState extends State<MapScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ✅ Top Bar
+            // Top Bar
             CustomTopBar(
               user: widget.user,
               onNotificationTapped: () {
@@ -39,7 +38,7 @@ class _MapScreenState extends State<MapScreen> {
               },
             ),
 
-            // ✅ Main Content
+            // Main Content
             Expanded(
               child: Stack(
                 children: [
@@ -49,7 +48,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
 
-            // ✅ Bottom Navigation
+            // Bottom Navigation
             CustomBottomNavigationBar(
               selectedIndex: _selectedIndex,
               onItemTapped: (index) {
