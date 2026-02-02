@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'register.dart';
 import 'login.dart';
+import 'resetpw.dart'; 
 
 class ForgotPWPage extends StatefulWidget {
   const ForgotPWPage({super.key});
@@ -13,6 +15,29 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
   bool _isOtpSent = false;
+  
+  // เพิ่มตัวแปรสำหรับ Loading
+  bool _isLoading = false; 
+  // เรียก instance ของ Supabase
+  final supabase = Supabase.instance.client;
+
+  @override
+  void initState() {
+    super.initState();
+    // --- ส่วนที่เพิ่ม: ดักจับตอน User กดลิงก์จากอีเมลกลับมา ---
+    supabase.auth.onAuthStateChange.listen((data) {
+      final AuthChangeEvent event = data.event;
+      if (event == AuthChangeEvent.passwordRecovery) {
+        // เมื่อเป็นเหตุการณ์กู้คืนรหัสผ่าน ให้ไปหน้าตั้งรหัสใหม่
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ResetPWPage()),
+          );
+        }
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -21,10 +46,53 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
     super.dispose();
   }
 
+  // --- ฟังก์ชันส่งอีเมล ---
+  Future<void> _handleResetPassword() async {
+    final email = _emailController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("กรุณากรอกอีเมล")),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await supabase.auth.resetPasswordForEmail(
+        email,
+        redirectTo: 'io.supabase.flutter://reset-callback', // **ต้องตรงกับ AndroidManifest**
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("ส่งลิงก์รีเซ็ตไปที่อีเมลแล้ว กรุณาตรวจสอบ Inbox/Junk"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message), backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ"), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Define colors relative to the design (conceptual)
-    final primaryColor = const Color(0xFF556AEB); 
+    final primaryColor = const Color(0xFF556AEB);
     final backgroundColor = Colors.white;
 
     return Scaffold(
@@ -39,7 +107,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
           ),
           // Gradient Overlay for readability
           Positioned.fill(
-             child: Container(
+            child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -59,9 +127,6 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo
-                  // Logo moved inside card
-
                   // Login Card
                   Card(
                     elevation: 8,
@@ -79,13 +144,13 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Image.asset(
                               'assets/images/logo.png',
-                              height: 100, 
+                              height: 100,
                               fit: BoxFit.contain,
                             ),
                           ),
 
                           const SizedBox(height: 20),
-                          Text(
+                          const Text(
                             "ลืมรหัสผ่าน",
                             style: TextStyle(
                               fontSize: 26,
@@ -94,7 +159,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             ),
                           ),
                           const SizedBox(height: 32),
-                          
+
                           // Email Input
                           TextField(
                             controller: _emailController,
@@ -112,8 +177,8 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
-                          // OTP Input
+
+                          // OTP Input (คงไว้ตาม UI เดิม แต่ไม่ได้ใช้ Logic OTP)
                           TextField(
                             controller: _otpController,
                             keyboardType: TextInputType.number,
@@ -125,6 +190,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                                 height: 60, // Ensure it fills height
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    // แค่เปลี่ยน UI state ตามเดิม ไม่ยิง API
                                     if (!_isOtpSent) {
                                       setState(() {
                                         _isOtpSent = true;
@@ -141,14 +207,13 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                                         topRight: Radius.circular(12),
                                         bottomRight: Radius.circular(12),
                                       ),
-                                      side: _isOtpSent 
-                                          ? const BorderSide(color: Color(0xFFCED4DA)) 
+                                      side: _isOtpSent
+                                          ? const BorderSide(color: Color(0xFFCED4DA))
                                           : BorderSide.none,
                                     ),
-                                    // Remove minimum size constraints to allow fitting
                                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "ขอรหัส",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -164,6 +229,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                               fillColor: Colors.grey[100],
                             ),
                           ),
+                          
                           if (_isOtpSent) ...[
                             Align(
                               alignment: Alignment.centerRight,
@@ -181,14 +247,13 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             ),
                           ],
                           const SizedBox(height: 32),
-                          
-                          // Reset Password Button
+
+                          // Reset Password Button (ปุ่มหลักในการส่งอีเมล)
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Handle Reset Password / OTP Verification
-                              },
+                              // แก้ไข: เรียกฟังก์ชัน _handleResetPassword เมื่อกดปุ่ม
+                              onPressed: _isLoading ? null : _handleResetPassword,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
@@ -198,23 +263,29 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                                 ),
                                 elevation: 3,
                               ),
-                              child: Text(
-                                "รีเซ็ตรหัสผ่าน",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              child: _isLoading 
+                                ? const SizedBox(
+                                    height: 20, 
+                                    width: 20, 
+                                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                                  )
+                                : const Text(
+                                    "รีเซ็ตรหัสผ่าน",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 30),
-                  
-                  // Sign Up
+
+                  // Sign Up & Back to Login
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -225,7 +296,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             MaterialPageRoute(builder: (context) => const RegisterPage()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "สร้างบัญชีใหม่",
                           style: TextStyle(
                             color: Colors.white,
@@ -237,8 +308,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         ),
                       ),
                       const SizedBox(width: 15),
-                      // Divider
-                      Text(
+                      const Text(
                         "|",
                         style: TextStyle(
                           color: Colors.white,
@@ -246,7 +316,6 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         ),
                       ),
                       const SizedBox(width: 15),
-                      // Back to Login
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -254,7 +323,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                             MaterialPageRoute(builder: (context) => const LoginPage()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "กลับไปหน้าเข้าสู่ระบบ",
                           style: TextStyle(
                             color: Colors.white,
@@ -276,4 +345,3 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
     );
   }
 }
-

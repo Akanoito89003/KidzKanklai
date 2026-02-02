@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../api_service.dart';
-import 'login_screen.dart';
+import 'login.dart';
 import 'fashion_screen.dart';
 import 'quest_screen.dart';
 import 'settings_screen.dart';
@@ -36,7 +36,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   void _logout() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
