@@ -16,6 +16,8 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationItem> notifications = [];
   bool _isPressed = false;
+  bool _isSelectionMode = false;
+  Set<String> _selectedIds = {};
 
   @override
   void initState() {
@@ -24,7 +26,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void _loadNotifications() {
-    // TODO: Load notifications from API
     setState(() {
       notifications = [
         NotificationItem(
@@ -32,7 +33,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           imagePath: 'lib/assets/quest_1_icon.png',
           title: 'เควส Normal ใกล้หมดเวลา!',
           description:
-              'ภารกิจ “สรุปคณิตบทที่ 1” ของคุณจะหมดเวลาในอีก 1 ชั่วโมง',
+              'ภารกิจ "สรุปคณิตบทที่ 1" ของคุณจะหมดเวลาในอีก 1 ชั่วโมง',
           timestamp: '5 นาทีที่แล้ว',
           isRead: false,
         ),
@@ -50,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           imagePath: 'lib/assets/club_1_icon.png',
           title: 'ภารกิจใหม่จากชมรม',
           description:
-              'หัวหน้าชมรมได้สร้าง “เควสติวหนังสือ” เข้าไปทำเพื่อรับ 200...',
+              'หัวหน้าชมรมได้สร้าง "เควสติวหนังสือ" เข้าไปทำเพื่อรับ 200...',
           timestamp: '7 ชั่วโมงที่แล้ว',
           isRead: false,
         ),
@@ -66,80 +67,128 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
   }
 
+  void _deleteAllNotifications() {
+    setState(() {
+      notifications.clear();
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('ลบการแจ้งเตือนทั้งหมดแล้ว')),
+    );
+  }
+
+  void _toggleSelectionMode() {
+    setState(() {
+      _isSelectionMode = !_isSelectionMode;
+      if (!_isSelectionMode) {
+        _selectedIds.clear();
+      }
+    });
+  }
+
+  void _deleteSelectedNotifications() {
+    setState(() {
+      notifications.removeWhere((item) => _selectedIds.contains(item.id));
+      _selectedIds.clear();
+      _isSelectionMode = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('ลบการแจ้งเตือนที่เลือกแล้ว')),
+    );
+  }
+
+  void _toggleSelection(String id) {
+    setState(() {
+      if (_selectedIds.contains(id)) {
+        _selectedIds.remove(id);
+      } else {
+        _selectedIds.add(id);
+      }
+    });
+  }
+
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: Stack(
-      children: [
-        Positioned.fill(
-          child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
-        ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
+          ),
 
-        _buildTopBar(),
+          _buildTopBar(),
 
-        Padding(
-          padding: const EdgeInsets.fromLTRB(24, 150, 24, 24),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                height: 600,//ฟิกความสูงกล่องตรงนี้
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.82),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: const Color(0xFFAAD7EA),
-                    width: 3,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 150, 24, 24),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 600,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.82),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFAAD7EA),
+                      width: 3,
+                    ),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+
+                      // Progress
+                      Text(
+                        'จำนวน ${notifications.length}/100',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // ListView
+                      Expanded(
+                        child: notifications.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'ไม่มีการแจ้งเตือน',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: notifications.length,
+                                itemBuilder: (context, index) {
+                                  return _buildNotificationCard(
+                                    context,
+                                    notifications[index],
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
 
-                    // Progress
-                    Text(
-                      'จำนวน 4/100',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                _buildHeaderTitle(),
 
-                    const SizedBox(height: 12),
-
-                    // ⭐ ListView scroll ได้ แต่กล่องไม่ยืด
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          return _buildNotificationCard(
-                            context,
-                            notifications[index],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                Positioned(
+                  bottom: 0,
+                  left: 20,
+                  right: 20,
+                  child: _buildBottomButtons(),
                 ),
-              ),
-
-              _buildHeaderTitle(),
-
-              Positioned(
-                bottom: 0,
-                left: 20,
-                right: 20,
-                child: _buildBottomButtons(),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+        ],
+      ),
+    );
+  }
 
   Widget _buildTopBar() {
     return Positioned(
@@ -155,9 +204,7 @@ Widget build(BuildContext context) {
             color: Colors.black.withOpacity(0.4),
             child: CustomTopBar(
               user: widget.user,
-              onNotificationTapped: () {
-                // อยู่หน้า notification แล้ว
-              },
+              onNotificationTapped: () {},
               onSettingsTapped: () {
                 Navigator.pushNamed(context, '/settings');
               },
@@ -195,83 +242,55 @@ Widget build(BuildContext context) {
     );
   }
 
-  Widget _buildNotificationContent() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Column(
-        children: [
-          // Progress indicator
-          Text(
-            'อ่านแล้ว 4/100',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-
-          SizedBox(height: 16),
-
-          // Notification List
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              return _buildNotificationCard(context, notifications[index]);
-            },
-          ),
-
-          SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBottomButtons() {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFFEA4444),
-              padding: EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
+    if (_isSelectionMode) {
+      // โหมดเลือก: แสดงปุ่ม "ยกเลิก" และ "ลบ"
+      return Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF556AEB), Color(0xFF59ABEC)],
+                ),
                 borderRadius: BorderRadius.circular(25),
               ),
-            ),
-            child: Text(
-              'ลบทั้งหมด',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              child: ElevatedButton(
+                onPressed: notifications.isEmpty ? null : _toggleSelectionMode,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  disabledBackgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: Text(
+                  'ยกเลิก',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF556AEB), Color(0xFF59ABEC)],
-              ),
-              borderRadius: BorderRadius.circular(25),
-            ),
+          SizedBox(width: 12),
+          Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _selectedIds.isEmpty ? null : _deleteSelectedNotifications,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                shadowColor: Colors.transparent,
+                backgroundColor: Color(0xFFEA4444),
+                disabledBackgroundColor: Color(0xFFEA4444).withOpacity(0.5),
                 padding: EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
               ),
               child: Text(
-                'เลือก',
+                'ลบ (${_selectedIds.length})',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -280,80 +299,187 @@ Widget build(BuildContext context) {
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-Widget _buildNotificationCard(BuildContext context, NotificationItem item) {
-  return Container(
-    margin: const EdgeInsets.only(bottom: 12),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: const Color(0xFFBADEEE).withOpacity(0.3),
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Row(
-      children: [
-        // ICON
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Image.asset(
-              item.imagePath.isNotEmpty
-                  ? item.imagePath
-                  : 'lib/assets/placeholder.png',
-              fit: BoxFit.contain,
-              errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.image_not_supported),
-            ),
-          ),
-        ),
-
-        const SizedBox(width: 12),
-
-        // Text
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.title ?? '-',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+        ],
+      );
+    } else {
+      // โหมดปกติ: แสดงปุ่ม "ลบทั้งหมด" และ "เลือก"
+      return Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: notifications.isEmpty ? null : _deleteAllNotifications,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFEA4444),
+                disabledBackgroundColor: Color(0xFFEA4444).withOpacity(0.5),
+                padding: EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                item.description.isNotEmpty ? item.description : '-',
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 12),
+              child: Text(
+                'ลบทั้งหมด',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ],
+            ),
           ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF556AEB), Color(0xFF59ABEC)],
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: ElevatedButton(
+                onPressed: notifications.isEmpty ? null : _toggleSelectionMode,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  disabledBackgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: Text(
+                  'เลือก',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
+  Widget _buildNotificationCard(BuildContext context, NotificationItem item) {
+    final isSelected = _selectedIds.contains(item.id);
+
+    return GestureDetector(
+      onTap: () {
+        if (_isSelectionMode) {
+          _toggleSelection(item.id);
+        } else {
+          // Navigate to detail page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NotificationDetailScreen(
+                notification: item,
+                user: widget.user,
+              ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? const Color(0xFF90CAF9).withOpacity(0.5)
+              : const Color(0xFFBADEEE).withOpacity(0.3),
+          borderRadius: BorderRadius.circular(12),
+          border: isSelected
+              ? Border.all(color: Color(0xFF1976D2), width: 2)
+              : null,
         ),
+        child: Row(
+          children: [
+            // Checkbox (แสดงเฉพาะโหมดเลือก)
+            if (_isSelectionMode)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isSelected ? Color(0xFF1976D2) : Colors.white,
+                    border: Border.all(
+                      color: Color(0xFF1976D2),
+                      width: 2,
+                    ),
+                  ),
+                  child: isSelected
+                      ? Icon(
+                          Icons.check,
+                          size: 16,
+                          color: Colors.white,
+                        )
+                      : null,
+                ),
+              ),
 
-        const SizedBox(width: 8),
+            // ICON
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Image.asset(
+                  item.imagePath.isNotEmpty
+                      ? item.imagePath
+                      : 'lib/assets/placeholder.png',
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) =>
+                      const Icon(Icons.image_not_supported),
+                ),
+              ),
+            ),
 
-        Text(
-          item.timestamp.isNotEmpty ? item.timestamp : '',
-          style: const TextStyle(fontSize: 11),
+            const SizedBox(width: 12),
+
+            // Text
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.title ?? '-',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    item.description.isNotEmpty ? item.description : '-',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(width: 8),
+
+            Text(
+              item.timestamp.isNotEmpty ? item.timestamp : '',
+              style: const TextStyle(fontSize: 11),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
-}
-
+      ),
+    );
+  }
 
   Widget _buildHeaderTitle() {
     return Align(
