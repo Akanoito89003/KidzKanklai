@@ -10,7 +10,7 @@ import 'screens/fashion_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/quest_screen.dart';
 import 'screens/countdown_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/profile.dart';
 import 'screens/notification_screen.dart';
 import 'screens/achievement_screen.dart';
 import 'screens/lootbox_screen.dart';
@@ -49,7 +49,7 @@ class KidzKanklaiApp extends StatelessWidget {
         '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
-        '/profile': (context) => const ProfileScreen(),
+        '/profile': (context) => const ProfilePage(),
         '/notification': (context) => const NotificationScreen(),
         '/achievement': (context) => const AchievementScreen(),
         '/lootbox': (context) => const LootboxScreen(),
