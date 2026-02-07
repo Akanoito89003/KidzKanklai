@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_top_bar.dart';
+import '../widgets/bottom_navigation_bar.dart';
 import '../api_service.dart';
 import 'notification_screen.dart';
+import 'lobby_screen.dart';
 
-class NotificationDetailScreen extends StatelessWidget {
+class NotificationDetailScreen extends StatefulWidget {
   final NotificationItem notification;
   final User? user;
 
@@ -14,111 +16,74 @@ class NotificationDetailScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<NotificationDetailScreen> createState() =>
+      _NotificationDetailScreenState();
+}
+
+class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
+  int _selectedIndex = 1;
+  bool _isPressed = false;
+  bool _isSelectionMode = false;
+  List<String> _selectedIds = [];
+
+  void _deleteSelectedNotifications() {
+    setState(() {
+      _selectedIds.clear();
+      _isSelectionMode = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFE8F4F8),
-              Color(0xFFFFFFFF),
-            ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Custom Top Bar
-              CustomTopBar(
-                user: user,
-                onNotificationTapped: () {
-                  Navigator.pop(context);
-                },
-                onSettingsTapped: () {
-                  Navigator.pushNamed(context, '/settings');
-                },
-              ),
 
-              // Header with back button
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back, color: Color(0xFF2E5C8A), size: 28),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    SizedBox(width: 8),
-                  ],
-                ),
-              ),
+          _buildTopBar(),
 
-              // Main Content
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+          // Main Content
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 150, 24, 24),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 680,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Color(0xFFE3F2FD).withOpacity(0.5),
+                    color: Colors.white.withOpacity(0.82),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Color(0xFFB3D9F2),
-                      width: 2,
+                      color: const Color(0xFFAAD7EA),
+                      width: 3,
                     ),
                   ),
                   child: Column(
                     children: [
-                      // Title
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF1E88E5),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'แจ้งเตือน',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 40),
 
-                      SizedBox(height: 32),
-
-                      // Trophy Icon
+                      // Icon
                       Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
                         child: Center(
-                          child: Text(
-                            '🏆',
-                            style: TextStyle(fontSize: 80),
+                          child: Image.asset(
+                            widget.notification.imagePath,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
 
                       SizedBox(height: 24),
 
-                      // Notification Title
+                      // Title
                       Text(
-                        notification.title != null ? notification.title! : 'No Title',
+                        widget.notification.title ?? 'แจ้งเตือน',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
@@ -127,56 +92,203 @@ class NotificationDetailScreen extends StatelessWidget {
 
                       SizedBox(height: 16),
 
-                      // Notification Description
-                      Text(
-                        notification.description,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                          height: 1.5,
+                      // Description
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Text(
+                            widget.notification.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                              height: 1.6,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
                       ),
 
-                      Spacer(),
+                      SizedBox(height: 24),
 
-                      // OK Button
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF42A5F5),
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
+                      // Buttons Row
+                      Row(
+                        children: [
+                          // ปุ่มไปทำ (สีน้ำเงิน)
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF556AEB),
+                                    Color(0xFF59ABEC),
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                                borderRadius: BorderRadius.circular(25),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFF4A8FE7).withOpacity(0.4),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // ไปหน้าที่เกี่ยวข้อง (เช่น quest screen)
+                                  Navigator.pop(context);
+                                  // TODO: Navigate to quest/achievement screen
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  shadowColor: Colors.transparent,
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                child: Text(
+                                  'ไปทำ',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ),
-                            elevation: 3,
                           ),
-                          child: Text(
-                            'ไปก่า',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+
+                          SizedBox(width: 12),
+                        ],
                       ),
 
                       SizedBox(height: 16),
                     ],
                   ),
                 ),
-              ),
 
-              SizedBox(height: 16),
-            ],
+                // Header Title
+                _buildHeaderTitle(),
+
+                Positioned(
+                  bottom: 0,
+                  left: 20,
+                  right: 20,
+                  child: _buildBottomButtons(),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopBar() {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 75,
+            color: Colors.black.withOpacity(0.4),
+            child: CustomTopBar(
+              user: widget.user,
+              onNotificationTapped: () {},
+              onSettingsTapped: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+          ),
+
+          // Back Button
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 10),
+            child: GestureDetector(
+              onTapDown: (_) => setState(() => _isPressed = true),
+              onTapUp: (_) {},
+              onTapCancel: () => setState(() => _isPressed = false),
+              onTap: () async {
+                await Future.delayed(const Duration(milliseconds: 200));
+                if (!mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationScreen(),
+                  ),
+                ).then((_) {
+                  setState(() => _isPressed = false);
+                });
+              },
+              child: Image.asset(
+                _isPressed
+                    ? 'lib/assets/bt-hover-Back.png'
+                    : 'lib/assets/bt-Back.png',
+                width: 50,
+                height: 50,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderTitle() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: FractionalTranslation(
+        translation: const Offset(0, -0.5),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 8),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2374B5),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: const Text(
+            "แจ้งเตือน",
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBottomButtons() {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            onPressed: _deleteSelectedNotifications,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFEA4444),
+              disabledBackgroundColor: Color(0xFFEA4444).withOpacity(0.5),
+              padding: EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+            child: Text(
+              'ลบ',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 12),
+      ],
     );
   }
 }

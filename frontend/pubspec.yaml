@@ -59,7 +59,7 @@ flutter:
   assets:
     - lib/assets/
     - lib/assets/Lobby.png
-    - lib/assets/acheivement_icon.png
+    - lib/assets/achievement_icon.png
     - lib/assets/quest_icon.png
     - lib/assets/Gasha.png
     - lib/assets/club_icon.png

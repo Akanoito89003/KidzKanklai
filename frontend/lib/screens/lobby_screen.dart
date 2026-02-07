@@ -19,7 +19,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   // Right Menu Items
   List<MenuItem> get _menuItems => [
     MenuItem(
-      imagePath: "lib/assets/acheivement_icon.png",
+      imagePath: "lib/assets/achievement_icon.png",
       label: 'ความสำเร็จ',
       onTap: () {
         Navigator.pushNamed(context, '/achievement');
