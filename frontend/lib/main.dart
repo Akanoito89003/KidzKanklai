@@ -18,6 +18,8 @@ import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
 import 'package:kidz_kanklai/frontend/setting_login.dart';
 import 'package:kidz_kanklai/frontend/setting_logout.dart';
+import 'package:kidz_kanklai/frontend/startgame.dart';
+import 'package:kidz_kanklai/frontend/loading.dart';
 import 'screens/test.dart';
 
 void main() {
@@ -55,6 +57,8 @@ class KidzKanklaiApp extends StatelessWidget {
         '/lootbox': (context) => const LootboxScreen(),
         '/map': (context) => const MapScreen(),
         '/club': (context) => const ClubScreen(),
+        '/startgame': (context) => const StartGamePage(),
+        '/load': (context) => const LoadingPage(),
       },
     );
   }
