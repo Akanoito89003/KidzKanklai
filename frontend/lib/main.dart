@@ -20,6 +20,7 @@ import 'package:kidz_kanklai/frontend/setting_login.dart';
 import 'package:kidz_kanklai/frontend/setting_logout.dart';
 import 'package:kidz_kanklai/frontend/startgame.dart';
 import 'package:kidz_kanklai/frontend/loading.dart';
+import 'package:kidz_kanklai/frontend/fashion.dart';
 import 'screens/test.dart';
 
 void main() {
@@ -47,7 +48,8 @@ class KidzKanklaiApp extends StatelessWidget {
         '/forgotpw': (context) => const ForgotPWPage(),
         '/resetpw': (context) => const ResetPWPage(),
         '/lobby': (context) => LobbyScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
+        /*'/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),*/
+        '/fashion': (context) => const FashionPage(),
         '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
