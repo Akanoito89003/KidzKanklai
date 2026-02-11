@@ -39,7 +39,7 @@ class KidzKanklaiApp extends StatelessWidget {
         textTheme: GoogleFonts.kanitTextTheme(),
         useMaterial3: true,
       ),
-      initialRoute: '/lobby',
+      initialRoute: '/startgame',
       routes: {
         '/test': (context) => const TestScreen(),
         '/login': (context) => const LoginScreen(),
