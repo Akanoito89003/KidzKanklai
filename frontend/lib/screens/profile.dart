@@ -1,13 +1,175 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileScreenState extends State<ProfileScreen> {
+  final _supabase = Supabase.instance.client;
+
+  // --- Profile Data ---
+  String _displayName = "Loading...";
+  String _displayBio = "กำลังโหลดข้อมูล...";
+  String _uid = "Loading...";
+
+  // --- Character Stats & Level Data ---
+  int _level = 1;
+  int _currentExp = 0; // EXP ที่เหลืออยู่ในเลเวลปัจจุบัน
+  int _nextLevelExp = 40; // EXP ที่ต้องใช้เพื่อขึ้นเลเวลถัดไป
+  double _expPercent = 0.0; // ค่า 0.0 - 1.0 สำหรับหลอดเลือด
+
+  String _intStat = "10";
+  String _strStat = "10";
+  String _creStat = "10";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserProfile();
+  }
+
+  // ฟังก์ชันคำนวณ Level และ EXP ตาม Logic ที่กำหนด
+  void _calculateLevelInfo(int totalExp) {
+    int level = 1;
+    int remainingExp = totalExp;
+    int requiredExp = 0;
+
+    while (true) {
+      // สูตรคำนวณ EXP ที่ต้องการในแต่ละเลเวล
+      if (level < 6) {
+        // level 1-5 : 40 * L
+        requiredExp = 40 * level;
+      } else {
+        // level 6+ : 200 + L^2
+        requiredExp = 200 + (level * level);
+      }
+
+      if (remainingExp >= requiredExp) {
+        remainingExp -= requiredExp;
+        level++;
+      } else {
+        // EXP ไม่พออัปเลเวล จบการคำนวณที่เลเวลนี้
+        break;
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _level = level;
+        _currentExp = remainingExp;
+        _nextLevelExp = requiredExp;
+        // คำนวณ % (กันหารด้วย 0)
+        _expPercent = (_nextLevelExp > 0) 
+            ? (_currentExp / _nextLevelExp).clamp(0.0, 1.0) 
+            : 0.0;
+      });
+    }
+  }
+
+  Future<void> _fetchUserProfile() async {
+    try {
+      final user = _supabase.auth.currentUser;
+      if (user == null) return;
+
+      setState(() {
+        _uid = user.id.substring(0, 8); // ตัด UID มาแสดงสั้นๆ
+      });
+
+      // 1. ดึงข้อมูล Profile (ชื่อ, Bio)
+      final profileData = await _supabase
+          .from('user_profiles')
+          .select('user_name, user_detail')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+      if (profileData != null) {
+        setState(() {
+          _displayName = profileData['user_name'] ?? "No Name";
+          _displayBio = profileData['user_detail'] ?? "ยังไม่มีคำแนะนำตัว";
+        });
+      }
+
+      // 2. ดึงข้อมูล Character (Stats, EXP)
+      final charData = await _supabase
+          .from('characters')
+          .select('character_experience, character_intelligence, character_strength, character_creative')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+      if (charData != null) {
+        // อัปเดต Stat
+        setState(() {
+          _intStat = charData['character_intelligence'].toString();
+          _strStat = charData['character_strength'].toString();
+          _creStat = charData['character_creative'].toString();
+        });
+
+        // คำนวณ Level จาก Total EXP
+        final totalExp = charData['character_experience'] as int? ?? 0;
+        _calculateLevelInfo(totalExp);
+      }
+
+    } catch (e) {
+      debugPrint('Error fetching profile: $e');
+    }
+  }
+
+  void _showEditDialog(String title, String currentValue, String columnToUpdate) {
+    final TextEditingController controller = TextEditingController(text: currentValue);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("แก้ไข$title"),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(hintText: "กรอก$titleใหม่"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("ยกเลิก"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final newValue = controller.text.trim();
+                if (newValue.isNotEmpty) {
+                  try {
+                    final userId = _supabase.auth.currentUser!.id;
+                    await _supabase.from('user_profiles').update({
+                      columnToUpdate: newValue
+                    }).eq('user_id', userId);
+
+                    if (mounted) {
+                      setState(() {
+                        if (columnToUpdate == 'user_name') _displayName = newValue;
+                        if (columnToUpdate == 'user_detail') _displayBio = newValue;
+                      });
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('บันทึกข้อมูลเรียบร้อย')),
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+                    );
+                  }
+                }
+              },
+              child: const Text("บันทึก"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,17 +195,10 @@ class _ProfilePageState extends State<ProfilePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // 1. Profile Information Box
                   _buildProfileBox(),
-                  
                   const SizedBox(height: 40),
-                  
-                  // 2. Statistics Box
                   _buildStatBox(),
-                  
                   const SizedBox(height: 20),
-
-                  // 3. Achievements Box
                   _buildAchievementBox(),
                 ],
               ),
@@ -54,11 +209,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ===========================================================================
-  // Section 1: Top Bar
-  // ===========================================================================
-
-  /// Builds the top navigation bar overlay.
   Widget _buildTopBar() {
     return Positioned(
       top: 0,
@@ -68,7 +218,6 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Semi-transparent black overlay
           Container(
             height: 75,
             color: Colors.black.withValues(alpha: 0.4),
@@ -78,11 +227,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ===========================================================================
-  // Section 2: Profile Box
-  // ===========================================================================
-
-  /// Builds the main profile card containing avatar, name, bio, and experience.
   Widget _buildProfileBox() {
     return Container(
       height: 200,
@@ -94,7 +238,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: Stack(
         children: [
-          // Decorative Background Images
           Positioned(
             bottom: 0,
             right: 0,
@@ -113,19 +256,13 @@ class _ProfilePageState extends State<ProfilePage> {
               fit: BoxFit.contain,
             ),
           ),
-
-          // Main Content Row
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Avatar Area
                 _buildAvatarSection(),
-                
                 const SizedBox(width: 16),
-                
-                // User Info Area
                 _buildUserInfoSection(),
               ],
             ),
@@ -135,7 +272,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Builds the avatar section including the circular EXP bar and level indicator.
   Widget _buildAvatarSection() {
     return SizedBox(
       width: 130,
@@ -143,15 +279,13 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Circular EXP Bar & Avatar Image
           Stack(
             alignment: Alignment.center,
             children: [
-              // Circular EXP Tube
               CustomPaint(
                 size: const Size(130, 130),
                 painter: GradientCircularProgressPainter(
-                  progress: 0.42,
+                  progress: _expPercent, // [UPDATED] ใช้ค่าจริง
                   gradient: const LinearGradient(
                     colors: [Color(0xFF88FF40), Color(0xFF66E0FF)],
                     begin: Alignment.bottomCenter,
@@ -160,8 +294,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   strokeWidth: 8,
                 ),
               ),
-              
-              // Avatar Image
               Container(
                 padding: const EdgeInsets.all(8),
                 child: const CircleAvatar(
@@ -171,8 +303,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
           ),
-
-          // Level Badge
           Positioned(
             bottom: 0,
             right: 0,
@@ -194,19 +324,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "3",
-                    style: TextStyle(
+                    "$_level", // [UPDATED] แสดง Level จริง
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28,
                       color: Colors.black,
                       height: 1,
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Lv.",
                     style: TextStyle(
                       fontSize: 10,
@@ -224,19 +354,17 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Builds the user information column (UID, Name, Bio, EXP Bar).
   Widget _buildUserInfoSection() {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // UID
           Row(
             children: [
-              const Text(
-                "UID : 8905066",
-                style: TextStyle(
+              Text(
+                "UID : $_uid", // [UPDATED] แสดง UID จริง
+                style: const TextStyle(
                   color: Color(0xFF00385D), 
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -251,27 +379,27 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           const SizedBox(height: 8),
-          
-          // Name Field
           _buildInfoField(
-            content: "UsakiB",
+            content: _displayName,
+            columnName: 'user_name',
             textStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
               color: Colors.black,
+              overflow: TextOverflow.ellipsis,
             ),
             borderColor: const Color(0xFF9DD0E7),
             iconColor: const Color(0xFF1E5173),
             height: 35,
           ),
           const SizedBox(height: 6),
-          
-          // Bio Field
           _buildInfoField(
-            content: "แนะนำตัว",
+            content: _displayBio,
+            columnName: 'user_detail',
             textStyle: const TextStyle(
               fontSize: 14,
               color: Colors.grey,
+              overflow: TextOverflow.ellipsis,
             ),
             borderColor: const Color(0xFF9DD0E7),
             iconColor: const Color(0xFF1E5173),
@@ -279,17 +407,15 @@ class _ProfilePageState extends State<ProfilePage> {
             iconSize: 14,
           ),
           const SizedBox(height: 8),
-          
-          // Linear EXP Bar
           _buildLinearExpBar(),
         ],
       ),
     );
   }
 
-  /// Helper to build standardized info fields (Name, Bio).
   Widget _buildInfoField({
     required String content,
+    required String columnName,
     required TextStyle textStyle,
     required Color borderColor,
     required Color iconColor,
@@ -308,19 +434,27 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(content, style: textStyle),
-          Image.asset(
+          Expanded(child: Text(content, style: textStyle)),
+          GestureDetector(
+            onTap: () {
+              _showEditDialog(
+                columnName == 'user_name' ? 'ชื่อ' : 'แนะนำตัว',
+                content,
+                columnName
+              );
+            },
+            child: Image.asset(
               'assets/images/iconEdit.png',
               width: iconSize,
               height: iconSize,
               color: iconColor,
+            ),
           ),
         ],
       ),
     );
   }
 
-  /// Builds the linear experience progress bar.
   Widget _buildLinearExpBar() {
     return Column(
       children: [
@@ -335,9 +469,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(width: 8),
-            const Text(
-              "42/100",
-              style: TextStyle(
+            Text(
+              "$_currentExp/$_nextLevelExp", // [UPDATED] แสดง EXP จริง
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 10,
                 color: Colors.black54,
@@ -357,14 +491,12 @@ class _ProfilePageState extends State<ProfilePage> {
             borderRadius: BorderRadius.circular(8),
             child: Stack(
               children: [
-                // Background Track
                 Container(
                   height: 12,
                   color: const Color(0xFF535353),
                 ),
-                // Progress Fill
                 FractionallySizedBox(
-                  widthFactor: 0.42,
+                  widthFactor: _expPercent, // [UPDATED] ใช้ % จริง
                   child: Container(
                     height: 12,
                     decoration: const BoxDecoration(
@@ -384,21 +516,13 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ===========================================================================
-  // Section 3: Statistics Box
-  // ===========================================================================
-
-  /// Builds the Stat Box with user stats.
   Widget _buildStatBox() {
     return Column(
       children: [
-        // Header
         _buildBoxHeader(
           iconPath: 'assets/images/statlogo-img.png',
           title: "ค่าความสามารถ",
         ),
-        
-        // Body
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(15),
@@ -406,23 +530,21 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Character Image
               Image.asset(
                 'assets/images/profile-character.png',
                 height: 160,
                 fit: BoxFit.contain,
               ),
               const SizedBox(width: 12),
-              
-              // Stats List
               Expanded(
                 child: Column(
                   children: [
-                    _buildStatRow('assets/images/stat-int-img.png', "ความฉลาด", "12"),
+                    // [UPDATED] ใช้ตัวแปร Stat ที่ดึงมาจาก DB
+                    _buildStatRow('assets/images/stat-int-img.png', "ความฉลาด", _intStat),
                     const SizedBox(height: 8),
-                    _buildStatRow('assets/images/stat-str-img.png', "ความแข็งแรง", "9"),
+                    _buildStatRow('assets/images/stat-str-img.png', "ความแข็งแรง", _strStat),
                     const SizedBox(height: 8),
-                    _buildStatRow('assets/images/stat-cre-img.png', "ความคิดสร้างสรรค์", "10"),
+                    _buildStatRow('assets/images/stat-cre-img.png', "ความคิดสร้างสรรค์", _creStat),
                   ],
                 ),
               ),
@@ -433,7 +555,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Builds a single row for a statistic (icon, label, value).
   Widget _buildStatRow(String iconPath, String label, String value) {
     return Container(
       height: 45,
@@ -484,21 +605,13 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ===========================================================================
-  // Section 4: Achievements Box
-  // ===========================================================================
-
-  /// Builds the Achievements Box.
   Widget _buildAchievementBox() {
     return Column(
       children: [
-        // Header
         _buildBoxHeader(
           iconPath: 'assets/images/IconAcheivement.png',
           title: "ความสำเร็จ 3/18",
         ),
-        
-        // Body
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(15),
@@ -518,7 +631,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Builds a single circular achievement item.
   Widget _buildAchievementItem(String imagePath) {
     return Container(
       width: 55,
@@ -538,11 +650,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ===========================================================================
-  // Section 5: Common Helpers
-  // ===========================================================================
-
-  /// Common header for Stat and Achievement boxes.
   Widget _buildBoxHeader({required String iconPath, required String title}) {
     return Container(
       height: 60,
@@ -561,7 +668,7 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(left: 14, right: 6),
         child: Row(
           children: [
-             Image.asset(
+              Image.asset(
               iconPath,
               height: 50,
               fit: BoxFit.contain,
@@ -587,7 +694,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Common decoration for box bodies (white semi-transparent with blue border).
   BoxDecoration _buildBoxDecoration() {
     return BoxDecoration(
       color: Colors.white.withValues(alpha: 0.5),
@@ -603,10 +709,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-// ===========================================================================
-// Section 6: Custom Painters
-// ===========================================================================
 
 class GradientCircularProgressPainter extends CustomPainter {
   final double progress;
@@ -624,7 +726,6 @@ class GradientCircularProgressPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width - strokeWidth) / 2;
     
-    // Draw background track
     final trackPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
@@ -638,8 +739,6 @@ class GradientCircularProgressPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..shader = gradient.createShader(Rect.fromCircle(center: center, radius: radius));
 
-    // Start from Bottom-Right (pi/4) and go Clockwise (2*pi*progress)
-    // The level circle is at bottom-right corner (~45 degrees).
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       3.14159 / 4, 

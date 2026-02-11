@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'login.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+import 'package:flutter_application_1/screens/login.dart';
+
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -53,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
       final res = await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
-        data: {'username': name},
+        data: {'full_name': name},
       );
 
       if (res.session != null && mounted) {
@@ -312,7 +313,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
+                            builder: (context) => const LoginScreen()),
                       );
                     },
                     child: const Text(

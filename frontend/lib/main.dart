@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-// import 'api_service.dart';
+import 'package:flutter_application_1/api_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'screens/login.dart';
 import 'screens/register.dart';
 import 'screens/forgotpw.dart';
 import 'screens/resetpw.dart';
-// import 'screens/lobby_screen.dart';
-// import 'screens/fashion_screen.dart';
-// import 'screens/settings_screen.dart';
+import 'screens/lobby.dart';
+import 'screens/fashion_screen.dart';
 import 'screens/quest_screen.dart';
 import 'screens/countdown_screen.dart';
 import 'screens/profile.dart';
-import 'screens/notification_screen.dart';
-import 'screens/achievement_screen.dart';
+import 'screens/notification.dart';
+import 'screens/achievement.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
-import 'package:kidz_kanklai/frontend/setting_login.dart';
-import 'package:kidz_kanklai/frontend/setting_logout.dart';
+import 'screens/setting_login.dart';
+import 'screens/setting_logout.dart';
 import 'screens/test.dart';
-
 import 'screens/me.dart';
 
 
@@ -57,19 +56,16 @@ class KidzKanklaiApp extends StatelessWidget {
       
       routes: {
 
-        '/me': (context) => const MePage(),
+        '/me': (context) => const MeScreen(),
 
-        '/test': (context) => const TestPage(),
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/forgotpw': (context) => const ForgotPWPage(),
-        '/resetpw': (context) => const ResetPWPage(),
-        // '/lobby': (context) => LobbyScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        // '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        // '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
+        '/test': (context) => const TestScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/forgotpw': (context) => const ForgotPWScreen(),
+        '/resetpw': (context) => const ResetPWScreen(),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
-        '/profile': (context) => const ProfilePage(),
+        '/profile': (context) => const ProfileScreen(),
         '/notification': (context) => const NotificationScreen(),
         '/achievement': (context) => const AchievementScreen(),
         '/lootbox': (context) => const LootboxScreen(),
@@ -93,10 +89,10 @@ class AuthGate extends StatelessWidget {
 
         if (session != null) {
           // ✅ login แล้ว
-          return const MePage();
+          return const MeScreen();
         } else {
           // ❌ ยังไม่ login
-          return const LoginPage();
+          return const LoginScreen();
         }
       },
     );

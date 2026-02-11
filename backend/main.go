@@ -2,31 +2,21 @@ package main
 
 import (
 	"backend/config"
-	"backend/routes"
-	"log"
-	"os"
-
-	_ "github.com/lib/pq"
+	"backend/handlers" // import handlers เข้ามา
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// 1. Config Database
-	config.InitDB()
+	config.ConnectDB()
 
-	// 2. Auto-Migrate Tables
-	config.CreateTables()
+	// ✅ [เพิ่มบรรทัดนี้] เริ่มระบบ Auth โหลด Key จาก Supabase
+	handlers.InitAuth() 
 
-	// 3. Seed Database (Create default user if empty)
-	config.SeedDatabase()
+	r := gin.Default()
 
-	// 4. Router
-	r := routes.SetupRouter()
+	auth := r.Group("/")
+	auth.Use(handlers.AuthMiddleware)
+	auth.GET("/me", handlers.Me)
 
-	// 5. Run
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	log.Println("[INFO] Server is running on port " + port)
-	r.Run(":" + port)
+	r.Run(":8080")
 }

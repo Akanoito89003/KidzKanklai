@@ -1,23 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:flutter_application_1/screens/test.dart';
+import 'package:flutter_application_1/screens/test.dart'; // ตรวจสอบว่ามีไฟล์นี้อยู่ หรือเปลี่ยนเป็นหน้าอื่นที่ต้องการ
 
-class SettingLogoutScreen extends StatefulWidget {
-  const SettingLogoutScreen({super.key});
+class SettingScreen extends StatefulWidget {
+  const SettingScreen({super.key});
 
   @override
-  State<SettingLogoutScreen> createState() => _SettingLogoutScreenState();
+  State<SettingScreen> createState() => _SettingScreenState();
 }
 
-class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
+class _SettingScreenState extends State<SettingScreen> {
   // State Variables
   bool _isPressed = false;
   bool _isMuted = false;
   double _musicVolume = 0.7;
   double _sfxVolume = 0.7;
+  
+  // Auth State
+  User? _currentUser;
+  final _supabase = Supabase.instance.client;
+
+  @override
+  void initState() {
+    super.initState();
+    // 1. ดึงข้อมูลผู้ใช้ปัจจุบัน
+    _currentUser = _supabase.auth.currentUser;
+
+    // 2. ดักฟังการเปลี่ยนแปลง Auth (Login/Logout) เพื่อรีเฟรชหน้าจออัตโนมัติ
+    _supabase.auth.onAuthStateChange.listen((data) {
+      if (mounted) {
+        setState(() {
+          _currentUser = data.session?.user;
+        });
+      }
+    });
+  }
+
+  // ฟังก์ชัน Logout
+  Future<void> _handleLogout() async {
+    await _supabase.auth.signOut();
+    if (mounted) {
+      // เมื่อ SignOut เสร็จ onAuthStateChange จะทำงานและรีเฟรชหน้าจอเป็น Guest เอง
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ออกจากระบบเรียบร้อย')),
+      );
+
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    }
+  }
+
+  // ฟังก์ชัน Login (จำลองการไปหน้า Login)
+  void _handleLogin() {
+    // Navigator.pushNamed(context, '/login'); หรือ
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
+    // ตรวจสอบสถานะล็อกอิน
+    final bool isLoggedIn = _currentUser != null;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -38,7 +81,6 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // White Content Container
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.82),
@@ -55,8 +97,21 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                            const SizedBox(height: 50),
-                           _buildUserAccountSection(),
+                           
+                           // --- [LOGIC] ส่วนที่เปลี่ยนตามสถานะ Login ---
+                           if (isLoggedIn) ...[
+                             _buildLoggedInAccountSection(),
+                             _buildLinkedAccountSection(),
+                           ] else ...[
+                             _buildGuestAccountSection(),
+                           ],
+                           // ------------------------------------------
+
                            _buildVolumeSettingsSection(),
+                           
+                           // ปุ่ม Logout (แสดงเฉพาะตอน Login แล้ว)
+                           if (isLoggedIn) 
+                             _buildLogoutButton(),
                         ],
                       ),
                     ), 
@@ -73,7 +128,6 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
     );
   }
 
-  /// Builds the top bar with the black overlay and back button.
   Widget _buildTopBar() {
     return Positioned(
       top: 0,
@@ -83,12 +137,11 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Black Overlay Box
+          // Top Bar Black Box
           Container(
             height: 75,
             color: Colors.black.withOpacity(0.4),
           ),
-          // Back Button
           Padding(
             padding: const EdgeInsets.only(left: 20, top: 10), 
             child: GestureDetector(
@@ -119,8 +172,147 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
     );
   }
 
-  /// Builds the User Account section with guest UI.
-  Widget _buildUserAccountSection() {
+  // =========================================================
+  // UI ส่วนที่ 1: สำหรับ User ที่ Login แล้ว (จาก SettingLoginPage)
+  // =========================================================
+  Widget _buildLoggedInAccountSection() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                'assets/images/IconPerson.png',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                "บัญชีผู้ใช้",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 3,
+            width: double.infinity,
+            color: const Color(0xFFCCE7F2),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+            decoration: BoxDecoration(
+              color: const Color(0xFFBADEEE),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            // แสดง Email จริงถ้ามี หรือแสดง default
+            child: Text(
+              "อีเมล : ${_currentUser?.email ?? 'xxxxxx@gmail.com'}",
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLinkedAccountSection() {
+    // 1. ดึง User ปัจจุบัน
+    final user = Supabase.instance.client.auth.currentUser;
+    
+    // 2. ดึง List ของ Providers ที่ User มี (เช่น ['email', 'google'])
+    // ถ้าไม่มีให้เป็น List ว่าง
+    final List<dynamic> providers = user?.appMetadata['providers'] ?? [];
+
+    // 3. เช็คเงื่อนไขง่ายๆ
+    final isGoogleConnected = providers.contains('google');
+    final isEmailConnected = providers.contains('email');
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Text(
+                "เชื่อมโยงบัญชี",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          const Divider(height: 3, color: Color(0xFFCCE7F2)),
+          const SizedBox(height: 6),
+          
+          // --- Google Row ---
+          _buildProviderRow(
+            iconPath: 'assets/images/IconGoogle.png',
+            label: 'Google',
+            isConnected: isGoogleConnected,
+          ),
+          
+          const SizedBox(height: 6),
+          
+          // --- Email Row ---
+          _buildProviderRow(
+            iconPath: 'assets/images/IconEmail.png',
+            label: 'Email',
+            isConnected: isEmailConnected,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // แยก Widget ย่อยออกมาเพื่อให้โค้ดสะอาดขึ้น
+  Widget _buildProviderRow({
+    required String iconPath,
+    required String label,
+    required bool isConnected,
+  }) {
+    return Row(
+      children: [
+        Image.asset(iconPath, width: 40, height: 40),
+        const SizedBox(width: 15),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 18, color: Colors.black),
+        ),
+        const Spacer(),
+        if (isConnected)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2374B5),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: const Text(
+              "เชื่อมต่อแล้ว",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  // =========================================================
+  // UI ส่วนที่ 2: สำหรับ Guest / ยังไม่ Login (จาก SettingLogoutPage)
+  // =========================================================
+  Widget _buildGuestAccountSection() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: Column(
@@ -181,9 +373,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // TODO: Navigate to Login Page
-                },
+                onPressed: _handleLogin, // เรียกฟังก์ชัน Login
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF556AEB),
                   foregroundColor: Colors.white,
@@ -208,13 +398,15 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
     );
   }
 
-  /// Builds the Volume Settings section.
+  // =========================================================
+  // UI ส่วนที่ 3: Shared (ใช้ร่วมกัน)
+  // =========================================================
+
   Widget _buildVolumeSettingsSection() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
       child: Column(
         children: [
-          // Section Header
           Row(
             children: [
               Image.asset(
@@ -234,7 +426,6 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          // Divider
           Container(
             height: 3,
             width: double.infinity,
@@ -243,7 +434,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
           const SizedBox(height: 5),
           const SizedBox(height: 5),
           
-          // Mute all Toggle
+          // Mute Toggle
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
@@ -339,7 +530,6 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
             ),
           ),
           const SizedBox(height: 6),
-          // Sliders
           _buildVolumeSlider(
             label: "Music / BGM",
             value: _musicVolume,
@@ -356,7 +546,6 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
     );
   }
 
-  /// Helper method to build a volume slider row.
   Widget _buildVolumeSlider({
     required String label,
     required double value,
@@ -394,7 +583,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
                    height: 30, 
                    child: SliderTheme(
                     data: SliderTheme.of(context).copyWith(
-                       trackHeight: 10,
+                      trackHeight: 10,
                       trackShape: const GradientRectSliderTrackShape(
                         gradient: LinearGradient(
                           colors: [Color(0xFF59ABEC), Color(0xFF85D755)],
@@ -409,8 +598,8 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
                       ),
                       overlayShape: const RoundSliderOverlayShape(overlayRadius: 12.0),
                       overlayColor: const Color(0xFF2374B5).withOpacity(0.2),
-                      activeTrackColor: Colors.transparent, 
-                      inactiveTrackColor: Colors.white, 
+                      activeTrackColor: Colors.transparent, // Handled by shape
+                      inactiveTrackColor: Colors.white, // Handled by shape but used as fallback/param
                     ),
                     child: Slider(
                       value: value,
@@ -433,7 +622,34 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
     );
   }
 
-  /// Builds the floating header title ("ตั้งค่า").
+  Widget _buildLogoutButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(40, 0, 40, 30),
+        child: ElevatedButton(
+          onPressed: _handleLogout, // เรียกฟังก์ชัน Logout
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFFE94444),
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            elevation: 3,
+          ),
+          child: const Text(
+            "ออกจากระบบ",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildHeaderTitle() {
     return Align(
       alignment: Alignment.topCenter,
@@ -459,7 +675,9 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
   }
 }
 
-// Custom Slider Shapes
+// =========================================================
+// Custom Slider Shapes (Helper Classes)
+// =========================================================
 
 class CircleThumbShape extends SliderComponentShape {
   final double thumbRadius;

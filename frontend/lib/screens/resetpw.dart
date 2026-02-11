@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'; 
-import 'login.dart';
 
-class ResetPWPage extends StatefulWidget {
-  const ResetPWPage({super.key});
+import 'package:flutter_application_1/screens/login.dart';
+
+class ResetPWScreen extends StatefulWidget {
+  const ResetPWScreen({super.key});
 
   @override
-  State<ResetPWPage> createState() => _ResetPWPageState();
+  State<ResetPWScreen> createState() => _ResetPWScreenState();
 }
 
-class _ResetPWPageState extends State<ResetPWPage> {
+class _ResetPWScreenState extends State<ResetPWScreen> {
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
   final TextEditingController _newPasswordController = TextEditingController();
@@ -73,7 +74,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
         // 3. สำเร็จแล้วพาไปหน้า Login (ล้าง Stack ไม่ให้กด Back กลับมาได้)
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
           (route) => false,
         );
       }
@@ -284,7 +285,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                         child: const Text(

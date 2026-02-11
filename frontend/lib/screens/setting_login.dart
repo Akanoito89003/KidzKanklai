@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'test.dart';
 
-class SettingLoginPage extends StatefulWidget {
-  const SettingLoginPage({super.key});
+import 'package:flutter_application_1/screens/test.dart';
+
+class SettingLoginScreen extends StatefulWidget {
+  const SettingLoginScreen({super.key});
 
   @override
-  State<SettingLoginPage> createState() => _SettingLoginPageState();
+  State<SettingLoginScreen> createState() => _SettingLoginScreenState();
 }
 
-class _SettingLoginPageState extends State<SettingLoginPage> {
+class _SettingLoginScreenState extends State<SettingLoginScreen> {
   bool _isPressed = false;
   bool _isMuted = false;
   double _musicVolume = 0.7;
@@ -97,7 +98,7 @@ class _SettingLoginPageState extends State<SettingLoginPage> {
                 if (!mounted) return;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TestPage()),
+                  MaterialPageRoute(builder: (context) => const TestScreen()),
                 ).then((_) {
                   setState(() => _isPressed = false);
                 });
