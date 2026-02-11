@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_top_bar.dart';
-import '../widgets/bottom_navigation_bar.dart';
-import '../api_service.dart';
-import 'notification_screen.dart';
-import 'lobby_screen.dart';
+import 'package:flutter_application_1/api_service.dart';
+
+
+import 'package:flutter_application_1/widgets/custom_top_bar.dart';
+import 'package:flutter_application_1/widgets/bottom_navigation_bar.dart';
+import 'package:flutter_application_1/screens/notification.dart';
+import 'package:flutter_application_1/screens/lobby.dart';
 
 class NotificationDetailScreen extends StatefulWidget {
   final NotificationItem notification;

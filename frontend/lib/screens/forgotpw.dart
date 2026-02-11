@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'register.dart';
-import 'login.dart';
 
-class ForgotPWPage extends StatefulWidget {
-  const ForgotPWPage({super.key});
+import 'package:flutter_application_1/screens/register.dart';
+import 'package:flutter_application_1/screens/login.dart';
+
+class ForgotPWScreen extends StatefulWidget {
+  const ForgotPWScreen({super.key});
 
   @override
-  State<ForgotPWPage> createState() => _ForgotPWPageState();
+  State<ForgotPWScreen> createState() => _ForgotPWScreenState();
 }
 
-class _ForgotPWPageState extends State<ForgotPWPage> {
+class _ForgotPWScreenState extends State<ForgotPWScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
   bool _isOtpSent = false;
@@ -222,7 +223,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
                         child: Text(
@@ -251,7 +252,7 @@ class _ForgotPWPageState extends State<ForgotPWPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
                           );
                         },
                         child: Text(

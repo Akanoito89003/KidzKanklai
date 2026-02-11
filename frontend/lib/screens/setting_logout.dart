@@ -99,7 +99,7 @@ class _SettingLogoutPageState extends State<SettingLogoutPage> {
                 if (!mounted) return;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TestPage()),
+                  MaterialPageRoute(builder: (context) => const TestScreen()),
                 ).then((_) {
                   setState(() => _isPressed = false);
                 });

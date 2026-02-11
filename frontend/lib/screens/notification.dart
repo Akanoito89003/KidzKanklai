@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/lobby_screen.dart';
-import '../widgets/custom_top_bar.dart';
-import '../api_service.dart';
-import '../screens/notification_details.dart';
+import 'package:flutter_application_1/api_service.dart';
+
+import 'package:flutter_application_1/screens/lobby.dart';
+import 'package:flutter_application_1/widgets/custom_top_bar.dart';
+import 'package:flutter_application_1/screens/notification_details.dart';
 
 class NotificationScreen extends StatefulWidget {
   final User? user;

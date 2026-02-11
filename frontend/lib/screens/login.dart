@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'register.dart';
-import 'forgotpw.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import 'package:flutter_application_1/screens/register.dart';
+import 'package:flutter_application_1/screens/forgotpw.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -152,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const ForgotPWPage()),
+                                  MaterialPageRoute(builder: (context) => const ForgotPWScreen()),
                                 );
                               },
                               child: Text(
@@ -240,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
                         child: Text(

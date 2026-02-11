@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:kidz_kanklai/frontend/login.dart';
 
-class StartGamePage extends StatefulWidget {
-  const StartGamePage({super.key});
+import 'package:flutter_application_1/screens/login.dart';
+
+class StartGameScreen extends StatefulWidget {
+  const StartGameScreen({super.key});
 
   @override
-  State<StartGamePage> createState() => _StartGamePageState();
+  State<StartGameScreen> createState() => _StartGameScreenState();
 }
 
-class _StartGamePageState extends State<StartGamePage> with SingleTickerProviderStateMixin {
+class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProviderStateMixin {
   int _phase = 0;
 
   // Opacity States
@@ -121,7 +122,7 @@ class _StartGamePageState extends State<StartGamePage> with SingleTickerProvider
   void _navigateToLogin() {
     Navigator.pushReplacement(
       context, 
-      MaterialPageRoute(builder: (context) => const LoginPage())
+      MaterialPageRoute(builder: (context) => const LoginScreen())
     );
   }
 

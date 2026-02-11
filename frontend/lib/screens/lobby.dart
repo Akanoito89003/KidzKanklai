@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../widgets/bottom_navigation_bar.dart';
-import '../widgets/right_side_menu.dart';
-import '../widgets/custom_top_bar.dart';
-import '../api_service.dart';
+import 'package:flutter_application_1/api_service.dart';
+
+import 'package:flutter_application_1/widgets/bottom_navigation_bar.dart';
+import 'package:flutter_application_1/widgets/right_side_menu.dart';
+import 'package:flutter_application_1/widgets/custom_top_bar.dart';
 
 class LobbyScreen extends StatefulWidget {
   final User? user;

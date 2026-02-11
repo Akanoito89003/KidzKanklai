@@ -2,14 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoadingPage extends StatefulWidget {
-  const LoadingPage({super.key});
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
 
   @override
-  State<LoadingPage> createState() => _LoadingPageState();
+  State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
-class _LoadingPageState extends State<LoadingPage> {
+class _LoadingScreenState extends State<LoadingScreen> {
   // State variable to track the number of dots (0-3)
   int _dotCount = 1;
   Timer? _timer;

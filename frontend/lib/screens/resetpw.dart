@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+
+import 'package:flutter_application_1/screens/login.dart';
 
 
-class ResetPWPage extends StatefulWidget {
-  const ResetPWPage({super.key});
+class ResetPWScreen extends StatefulWidget {
+  const ResetPWScreen({super.key});
 
   @override
-  State<ResetPWPage> createState() => _ResetPWPageState();
+  State<ResetPWScreen> createState() => _ResetPWScreenState();
 }
 
-class _ResetPWPageState extends State<ResetPWPage> {
+class _ResetPWScreenState extends State<ResetPWScreen> {
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
   final TextEditingController _newPasswordController = TextEditingController();
@@ -200,7 +201,7 @@ class _ResetPWPageState extends State<ResetPWPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginPage()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                         child: Text(

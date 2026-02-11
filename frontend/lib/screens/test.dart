@@ -6,14 +6,14 @@ import 'resetpw.dart';
 import 'setting_login.dart';
 import 'setting_logout.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
+class TestScreen extends StatefulWidget {
+  const TestScreen({super.key});
 
   @override
-  State<TestPage> createState() => _TestPageState();
+  State<TestScreen> createState() => _TestScreenState();
 }
 
-class _TestPageState extends State<TestPage> {
+class _TestScreenState extends State<TestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +46,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
                           );
                         },
                         child: Text(
@@ -64,7 +64,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
                         child: Text(
@@ -81,7 +81,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ForgotPWPage()),
+                            MaterialPageRoute(builder: (context) => const ForgotPWScreen()),
                           );
                         },
                         child: Text(
@@ -98,7 +98,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ResetPWPage()),
+                            MaterialPageRoute(builder: (context) => const ResetPWScreen()),
                           );
                         },
                         child: Text(
