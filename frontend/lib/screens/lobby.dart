@@ -62,7 +62,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   Navigator.pushNamed(context, '/notification');
                 },
                 onSettingsTapped: () {
-                  Navigator.pushNamed(context, '/settings');
+                  Navigator.pushNamed(context, '/setting');
                 },
               ),
 

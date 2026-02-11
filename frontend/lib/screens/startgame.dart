@@ -120,10 +120,16 @@ class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProv
   // ==========================================
 
   void _navigateToLogin() {
+    // 🔴 ของเดิม: ไปหน้า LoginScreen ตรงๆ
+    /*
     Navigator.pushReplacement(
       context, 
       MaterialPageRoute(builder: (context) => const LoginScreen())
     );
+    */
+
+    // ✅ ของใหม่: ไปที่ AuthGate (ผ่าน route name '/auth') เพื่อเช็ค Login ก่อน
+    Navigator.pushReplacementNamed(context, '/auth');
   }
 
   // ==========================================

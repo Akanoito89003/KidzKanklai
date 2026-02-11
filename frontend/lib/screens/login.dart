@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _authStream.listen((data) {
       final session = data.session;
       if (session != null && mounted) {
-        Navigator.pushReplacementNamed(context, '/me');
+        Navigator.pushReplacementNamed(context, '/lobby');
       }
     });
   }
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')),
         );
 
-        Navigator.pushReplacementNamed(context, '/me');
+        Navigator.pushReplacementNamed(context, '/lobby');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

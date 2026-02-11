@@ -58,14 +58,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (res.session != null && mounted) {
-        Navigator.pushReplacementNamed(context, '/me');
+        Navigator.pushReplacementNamed(context, '/lobby');
       } else {
         await Supabase.instance.client.auth.signInWithPassword(
           email: email,
           password: password,
         );
         if (mounted) {
-          Navigator.pushReplacementNamed(context, '/me');
+          Navigator.pushReplacementNamed(context, '/lobby');
         }
       }
     } on AuthException catch (e) {

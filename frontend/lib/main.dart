@@ -17,8 +17,7 @@ import 'screens/achievement.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
-import 'screens/setting_login.dart';
-import 'screens/setting_logout.dart';
+import 'screens/setting.dart';
 import 'screens/startgame.dart';
 import 'screens/loading.dart';
 import 'screens/test.dart';
@@ -54,10 +53,11 @@ class KidzKanklaiApp extends StatelessWidget {
       ),
 
       // ✅ ใช้ AuthGate เป็นหน้าแรก
-      home: const AuthGate(),
+      home: const StartGameScreen(),
       
       routes: {
 
+        '/auth': (context) => const AuthGate(),
         '/me': (context) => const MeScreen(),
 
         '/test': (context) => const TestScreen(),
@@ -66,7 +66,8 @@ class KidzKanklaiApp extends StatelessWidget {
         '/forgotpw': (context) => const ForgotPWScreen(),
         '/resetpw': (context) => const ResetPWScreen(),
         '/lobby': (context) => LobbyScreen(),
-        '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
+        '/setting': (context) => const SettingScreen(),
+        // '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
         '/profile': (context) => const ProfileScreen(),
@@ -95,7 +96,7 @@ class AuthGate extends StatelessWidget {
 
         if (session != null) {
           // ✅ login แล้ว
-          return const MeScreen();
+          return const LobbyScreen();
         } else {
           // ❌ ยังไม่ login
           return const LoginScreen();
