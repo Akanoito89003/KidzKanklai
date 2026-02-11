@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; 
 
 import 'package:flutter_application_1/screens/login.dart';
-
 
 class ResetPWScreen extends StatefulWidget {
   const ResetPWScreen({super.key});
@@ -14,8 +14,10 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
+  // เพิ่มตัวแปรเช็คสถานะ Loading
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -23,6 +25,80 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
     _confirmPasswordController.dispose();
     super.dispose();
   }
+
+  // --- เพิ่มฟังก์ชันสำหรับอัปเดตรหัสผ่าน ---
+  Future<void> _handleResetPassword() async {
+    final newPassword = _newPasswordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+
+    // 1. Validation เบื้องต้น
+    if (newPassword.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("กรุณากรอกรหัสผ่านให้ครบถ้วน")),
+      );
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร")),
+      );
+      return;
+    }
+
+    if (newPassword != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("รหัสผ่านไม่ตรงกัน")),
+      );
+      return;
+    }
+
+    // 2. เริ่ม Process กับ Supabase
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await Supabase.instance.client.auth.updateUser(
+        UserAttributes(password: newPassword),
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("เปลี่ยนรหัสผ่านสำเร็จ! กรุณาเข้าสู่ระบบใหม่"),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // 3. สำเร็จแล้วพาไปหน้า Login (ล้าง Stack ไม่ให้กด Back กลับมาได้)
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          (route) => false,
+        );
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message), backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("เกิดข้อผิดพลาด กรุณาลองใหม่"), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+  // ----------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +161,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Text(
+                          const Text(
                             "รีเซ็ตรหัสผ่าน",
                             style: TextStyle(
                               fontSize: 26,
@@ -161,9 +237,8 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Handle Reset Password Logic
-                              },
+                              // แก้ไข: เชื่อมปุ่มกับฟังก์ชัน _handleResetPassword
+                              onPressed: _isLoading ? null : _handleResetPassword, 
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
@@ -174,13 +249,23 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                                 ),
                                 elevation: 3,
                               ),
-                              child: Text(
-                                "ยืนยัน",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              // แก้ไข: แสดง Loading Indicator เมื่อกำลังโหลด
+                              child: _isLoading 
+                                ? const SizedBox(
+                                    height: 24, 
+                                    width: 24, 
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white, 
+                                      strokeWidth: 2
+                                    )
+                                  )
+                                : const Text(
+                                    "ยืนยัน",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                             ),
                           ),
                         ],
@@ -194,7 +279,6 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       // Back to Login
                       GestureDetector(
                         onTap: () {
@@ -204,7 +288,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                                 builder: (context) => const LoginScreen()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "กลับไปหน้าเข้าสู่ระบบ",
                           style: TextStyle(
                             color: Colors.white,

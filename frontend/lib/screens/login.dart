@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:flutter_application_1/screens/lobby.dart';
 import 'package:flutter_application_1/screens/register.dart';
 import 'package:flutter_application_1/screens/forgotpw.dart';
+import 'package:flutter_application_1/screens/profile.dart';
+import 'package:flutter_application_1/screens/lobby.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +18,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  late final Stream<AuthState> _authStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 👇 ฟังการเปลี่ยนแปลงสถานะ login (สำคัญสำหรับ Google OAuth)
+    _authStream = Supabase.instance.client.auth.onAuthStateChange;
+
+    _authStream.listen((data) {
+      final session = data.session;
+      if (session != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/me');
+      }
+    });
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -23,25 +42,68 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// 🔐 Login ด้วย Email/Password
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('กรุณากรอกอีเมลและรหัสผ่าน')),
+      );
+      return;
+    }
+
+    try {
+      final res = await Supabase.instance.client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      if (res.user != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('เข้าสู่ระบบสำเร็จ')),
+        );
+
+        Navigator.pushReplacementNamed(context, '/me');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+    }
+  }
+
+  /// 🔑 Login ด้วย Google
+  Future<void> _loginWithGoogle() async {
+    try {
+      await Supabase.instance.client.auth.signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: 'io.supabase.flutter://login-callback',
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google login failed: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Define colors relative to the design (conceptual)
-    final primaryColor = const Color(0xFF556AEB); 
+    final primaryColor = const Color(0xFF556AEB);
     final backgroundColor = Colors.white;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset(
               'assets/images/bgRegister.png',
               fit: BoxFit.cover,
             ),
           ),
-          // Gradient Overlay for readability
           Positioned.fill(
-             child: Container(
+            child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -54,17 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          // Content
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo
-                  // Logo moved inside card
-
-                  // Login Card
                   Card(
                     elevation: 8,
                     shape: RoundedRectangleBorder(
@@ -76,24 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Logo
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Image.asset(
                               'assets/images/logo.png',
-                              height: 100, 
+                              height: 100,
                               fit: BoxFit.contain,
                             ),
                           ),
-                          Text(
+                          const Text(
                             "ยินดีต้อนรับกลับสู่ห้องเรียน",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
+                            style: TextStyle(color: Colors.black, fontSize: 16),
                           ),
                           const SizedBox(height: 20),
-                          Text(
+                          const Text(
                             "เข้าสู่ระบบ",
                             style: TextStyle(
                               fontSize: 26,
@@ -102,8 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 32),
-                          
-                          // Email Input
+
                           TextField(
                             controller: _emailController,
                             decoration: InputDecoration(
@@ -118,8 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          
-                          // Password Input
+
                           TextField(
                             controller: _passwordController,
                             obscureText: _obscureText,
@@ -146,8 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          
-                          // Forgot Password
+
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
@@ -164,14 +214,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          
-                          // Login Button
+
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Handle Login
-                              },
+                              onPressed: _login,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
@@ -181,23 +228,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 elevation: 3,
                               ),
-                              child: Text(
+                              child: const Text(
                                 "เข้าสู่ระบบ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
                           const SizedBox(height: 12),
-                          // Google Login Button
+
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
-                                // Handle Google Login
-                              },
+                              onPressed: _loginWithGoogle,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,
                                 foregroundColor: Colors.white,
@@ -216,12 +258,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: 36,
                                   ),
                                   const SizedBox(width: 12),
-                                  Text(
+                                  const Text(
                                     "เข้าสู่ระบบผ่าน Google",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -231,10 +270,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 30),
-                  
-                  // Sign Up
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -245,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "สร้างบัญชีใหม่",
                           style: TextStyle(
                             color: Colors.white,
@@ -267,4 +305,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

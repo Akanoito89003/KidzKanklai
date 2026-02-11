@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'register.dart';
-import 'forgotpw.dart';
-import 'resetpw.dart';
-import 'setting_login.dart';
-import 'setting_logout.dart';
+
+import 'package:flutter_application_1/screens/login.dart';
+import 'package:flutter_application_1/screens/register.dart';
+import 'package:flutter_application_1/screens/forgotpw.dart';
+import 'package:flutter_application_1/screens/resetpw.dart';
+import 'package:flutter_application_1/screens/setting_login.dart';
+import 'package:flutter_application_1/screens/setting_logout.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -115,7 +116,7 @@ class _TestScreenState extends State<TestScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SettingLoginPage()),
+                            MaterialPageRoute(builder: (context) => const SettingLoginScreen()),
                           );
                         },
                         child: Text(
@@ -132,7 +133,7 @@ class _TestScreenState extends State<TestScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SettingLogoutPage()),
+                            MaterialPageRoute(builder: (context) => const SettingLogoutScreen()),
                           );
                         },
                         child: Text(
