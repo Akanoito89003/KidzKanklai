@@ -57,6 +57,27 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - lib/assets/
+    - lib/assets/Lobby.png
+    - lib/assets/achievement_icon.png
+    - lib/assets/quest_icon.png
+    - lib/assets/Gasha.png
+    - lib/assets/club_icon.png
+    - lib/assets/coin.png
+    - lib/assets/fashion_icon.png
+    - lib/assets/map_icon.png
+    - lib/assets/Ticket-ภารกิจ_img.png
+    - lib/assets/Ticket-เข้าสอบ_img.png
+    - lib/assets/profile_img.png
+    - lib/assets/star-1.png
+    - lib/assets/star-2.png
+    - lib/assets/bt-Back.png
+    - lib/assets/bt-hover-Back.png
+    - lib/assets/BG.png
+    - lib/assets/quest_1_icon.png
+
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -64,8 +85,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/images/
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

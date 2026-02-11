@@ -19,6 +19,8 @@ import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
 import 'screens/setting_login.dart';
 import 'screens/setting_logout.dart';
+import 'screens/startgame.dart';
+import 'screens/loading.dart';
 import 'screens/test.dart';
 import 'screens/me.dart';
 
@@ -63,6 +65,8 @@ class KidzKanklaiApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/forgotpw': (context) => const ForgotPWScreen(),
         '/resetpw': (context) => const ResetPWScreen(),
+        '/lobby': (context) => LobbyScreen(),
+        '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
         '/profile': (context) => const ProfileScreen(),
@@ -71,6 +75,8 @@ class KidzKanklaiApp extends StatelessWidget {
         '/lootbox': (context) => const LootboxScreen(),
         '/map': (context) => const MapScreen(),
         '/club': (context) => const ClubScreen(),
+        '/startgame': (context) => const StartGameScreen(),
+        '/load': (context) => const LoadingScreen(),
       },
     );
   }

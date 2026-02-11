@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_application_1/screens/register.dart';
 import 'package:flutter_application_1/screens/forgotpw.dart';
 import 'package:flutter_application_1/screens/profile.dart';
+import 'package:flutter_application_1/screens/lobby.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
