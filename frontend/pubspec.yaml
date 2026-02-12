@@ -75,6 +75,7 @@ flutter:
     - lib/assets/bt-hover-Back.png
     - lib/assets/BG.png
     - lib/assets/quest_1_icon.png
+    - lib/assets/check.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

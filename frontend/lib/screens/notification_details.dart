@@ -111,7 +111,9 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
 
                       // Buttons Row
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(width: 60),
                           // ปุ่มไปทำ (สีน้ำเงิน)
                           Expanded(
                             child: Container(
@@ -159,7 +161,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
                             ),
                           ),
 
-                          SizedBox(width: 12),
+                          SizedBox(width: 60),
                         ],
                       ),
 
@@ -195,7 +197,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 75,
+            height: 75,        
             color: Colors.black.withOpacity(0.4),
             child: CustomTopBar(
               user: widget.user,
@@ -265,7 +267,9 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
 
   Widget _buildBottomButtons() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SizedBox(width: 60),
         Expanded(
           child: ElevatedButton(
             onPressed: _deleteSelectedNotifications,
@@ -287,7 +291,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
             ),
           ),
         ),
-        SizedBox(width: 12),
+        SizedBox(width: 60),
       ],
     );
   }

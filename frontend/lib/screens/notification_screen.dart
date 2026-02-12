@@ -44,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           description:
               'ยินดีด้วย! คุณปลดล็อก "นักวางแผนมือใหม่" แล้ว อย่าลืมเข้าไปรับ...',
           timestamp: '5 ชั่วโมงที่แล้ว',
-          isRead: false,
+          isRead: true,
         ),
         NotificationItem(
           id: '3',
@@ -53,7 +53,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           description:
               'หัวหน้าชมรมได้สร้าง "เควสติวหนังสือ" เข้าไปทำเพื่อรับ 200...',
           timestamp: '7 ชั่วโมงที่แล้ว',
-          isRead: false,
+          isRead: true,
         ),
         NotificationItem(
           id: '4',
@@ -62,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           description:
               'ค่าความสามารถของคุณถึงเกณฑ์แล้ว คุณสามารถใช้สิทธิเข้า...',
           timestamp: '5 ชั่วโมงที่แล้ว',
-          isRead: false,
+          isRead: true,
         ),
       ];
     });
@@ -137,7 +137,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                   child: Column(
                     children: [
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 30),
 
                       // Progress
                       Text(
@@ -147,9 +147,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
-                      const SizedBox(height: 12),
-
                       // ListView
                       Expanded(
                         child: notifications.isEmpty
@@ -378,7 +375,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
         if (_isSelectionMode) {
           _toggleSelection(item.id);
         } else {
-          // Navigate to detail page
+          // เปลี่ยนสถานะเป็นอ่านแล้ว
+          setState(() {
+            item.isRead = true;
+          });
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -396,12 +396,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
         decoration: BoxDecoration(
           color: isSelected
               ? const Color(0xFF90CAF9).withOpacity(0.5)
-              : const Color(0xFFBADEEE).withOpacity(0.3),
+              : !item.isRead
+              ? const Color(0xFF85C3DF) // ยังไม่ได้อ่าน
+              : const Color(0xFFBADEEE), // อ่านแล้ว
           borderRadius: BorderRadius.circular(12),
           border: isSelected
               ? Border.all(color: Color(0xFF1976D2), width: 2)
               : null,
         ),
+
         child: Row(
           children: [
             // Checkbox (แสดงเฉพาะโหมดเลือก)
@@ -413,11 +416,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: isSelected ? Color(0xFF1976D2) : Colors.white,
+                    color: Colors.white,
                     border: Border.all(color: Color(0xFF1976D2), width: 2),
                   ),
                   child: isSelected
-                      ? Icon(Icons.check, size: 16, color: Colors.white)
+                      ? Icon(Icons.circle, size: 16, color: Color(0xFF2374B5))
                       : null,
                 ),
               ),
@@ -426,7 +429,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Container(
               width: 50,
               height: 50,
-              
+
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: Image.asset(
