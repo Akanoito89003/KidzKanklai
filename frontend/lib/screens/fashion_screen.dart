@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../api_service.dart';
+import 'package:flutter_application_1/api_service.dart';
 
 class FashionScreen extends StatefulWidget {
   final User user;
