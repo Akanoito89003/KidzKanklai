@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 
 import 'package:flutter_application_1/screens/login.dart';
 import 'package:flutter_application_1/screens/register.dart';
@@ -16,23 +15,6 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-=======
-import 'login.dart';
-import 'register.dart';
-import 'forgotpw.dart';
-import 'resetpw.dart';
-import 'setting_login.dart';
-import 'setting_logout.dart';
-
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
-
-  @override
-  State<TestPage> createState() => _TestPageState();
-}
-
-class _TestPageState extends State<TestPage> {
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +47,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const LoginScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const LoginPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(
@@ -87,11 +65,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const RegisterScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const RegisterPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(
@@ -108,11 +82,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const ForgotPWScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const ForgotPWPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(
@@ -129,11 +99,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const ResetPWScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const ResetPWPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(
@@ -150,11 +116,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const SettingLoginScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const SettingLoginPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(
@@ -171,11 +133,7 @@ class _TestPageState extends State<TestPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const SettingLogoutScreen()),
-=======
-                            MaterialPageRoute(builder: (context) => const SettingLogoutPage()),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           );
                         },
                         child: Text(

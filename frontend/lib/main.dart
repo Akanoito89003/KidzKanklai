@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_application_1/api_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-=======
-import 'api_service.dart';
-import 'package:google_fonts/google_fonts.dart';
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
 import 'screens/login.dart';
 import 'screens/register.dart';
 import 'screens/forgotpw.dart';
 import 'screens/resetpw.dart';
-<<<<<<< HEAD
 import 'screens/lobby.dart';
-=======
-import 'screens/lobby_screen.dart';
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
 import 'screens/fashion_screen.dart';
 import 'screens/quest_screen.dart';
 import 'screens/countdown_screen.dart';
 import 'screens/profile.dart';
-<<<<<<< HEAD
 import 'screens/notification.dart';
 import 'screens/achievement.dart';
 import 'screens/lootbox_screen.dart';
@@ -44,18 +34,6 @@ Future<void> main() async {
       authFlowType: AuthFlowType.pkce, // 🔥 สำคัญสำหรับ Google OAuth
     ),
   );
-=======
-import 'screens/notification_screen.dart';
-import 'screens/achievement_screen.dart';
-import 'screens/lootbox_screen.dart';
-import 'screens/map_screen.dart';
-import 'screens/club_screen.dart';
-import 'package:kidz_kanklai/frontend/setting_login.dart';
-import 'package:kidz_kanklai/frontend/setting_logout.dart';
-import 'package:kidz_kanklai/frontend/startgame.dart';
-import 'package:kidz_kanklai/frontend/loading.dart';
-import 'screens/test.dart';
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
 
   runApp(const KidzKanklaiApp());
 }
@@ -78,7 +56,6 @@ class KidzKanklaiApp extends StatelessWidget {
       home: const StartGameScreen(),
       
       routes: {
-<<<<<<< HEAD
 
         '/auth': (context) => const AuthGate(),
         '/me': (context) => const MeScreen(),
@@ -91,25 +68,14 @@ class KidzKanklaiApp extends StatelessWidget {
         '/lobby': (context) => LobbyScreen(),
         '/setting': (context) => const SettingScreen(),
         // '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-=======
-        '/test': (context) => const TestPage(),
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/forgotpw': (context) => const ForgotPWPage(),
-        '/resetpw': (context) => const ResetPWPage(),
-        '/lobby': (context) => LobbyScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
-        '/profile': (context) => const ProfilePage(),
+        '/profile': (context) => const ProfileScreen(),
         '/notification': (context) => const NotificationScreen(),
         '/achievement': (context) => const AchievementScreen(),
         '/lootbox': (context) => const LootboxScreen(),
         '/map': (context) => const MapScreen(),
         '/club': (context) => const ClubScreen(),
-<<<<<<< HEAD
         '/startgame': (context) => const StartGameScreen(),
         '/load': (context) => const LoadingScreen(),
       },
@@ -135,10 +101,6 @@ class AuthGate extends StatelessWidget {
           // ❌ ยังไม่ login
           return const LoginScreen();
         }
-=======
-        '/startgame': (context) => const StartGamePage(),
-        '/load': (context) => const LoadingPage(),
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
       },
     );
   }

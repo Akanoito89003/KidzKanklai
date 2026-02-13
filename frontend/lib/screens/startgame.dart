@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-<<<<<<< HEAD
 
 import 'package:flutter_application_1/screens/login.dart';
 
@@ -13,18 +12,6 @@ class StartGameScreen extends StatefulWidget {
 }
 
 class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProviderStateMixin {
-=======
-import 'package:kidz_kanklai/frontend/login.dart';
-
-class StartGamePage extends StatefulWidget {
-  const StartGamePage({super.key});
-
-  @override
-  State<StartGamePage> createState() => _StartGamePageState();
-}
-
-class _StartGamePageState extends State<StartGamePage> with SingleTickerProviderStateMixin {
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   int _phase = 0;
 
   // Opacity States
@@ -133,7 +120,6 @@ class _StartGamePageState extends State<StartGamePage> with SingleTickerProvider
   // ==========================================
 
   void _navigateToLogin() {
-<<<<<<< HEAD
     // 🔴 ของเดิม: ไปหน้า LoginScreen ตรงๆ
     /*
     Navigator.pushReplacement(
@@ -144,12 +130,6 @@ class _StartGamePageState extends State<StartGamePage> with SingleTickerProvider
 
     // ✅ ของใหม่: ไปที่ AuthGate (ผ่าน route name '/auth') เพื่อเช็ค Login ก่อน
     Navigator.pushReplacementNamed(context, '/auth');
-=======
-    Navigator.pushReplacement(
-      context, 
-      MaterialPageRoute(builder: (context) => const LoginPage())
-    );
->>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   }
 
   // ==========================================
