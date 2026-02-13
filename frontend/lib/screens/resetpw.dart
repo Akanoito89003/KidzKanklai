@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:supabase_flutter/supabase_flutter.dart'; 
 
 import 'package:flutter_application_1/screens/login.dart';
@@ -18,6 +19,24 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
 
   // เพิ่มตัวแปรเช็คสถานะ Loading
   bool _isLoading = false;
+=======
+import 'login.dart';
+
+
+class ResetPWPage extends StatefulWidget {
+  const ResetPWPage({super.key});
+
+  @override
+  State<ResetPWPage> createState() => _ResetPWPageState();
+}
+
+class _ResetPWPageState extends State<ResetPWPage> {
+  bool _obscureNewPassword = true;
+  bool _obscureConfirmPassword = true;
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
 
   @override
   void dispose() {
@@ -26,6 +45,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
     super.dispose();
   }
 
+<<<<<<< HEAD
   // --- เพิ่มฟังก์ชันสำหรับอัปเดตรหัสผ่าน ---
   Future<void> _handleResetPassword() async {
     final newPassword = _newPasswordController.text.trim();
@@ -100,6 +120,8 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
   }
   // ----------------------------------------
 
+=======
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   @override
   Widget build(BuildContext context) {
     // Define colors relative to the design (conceptual)
@@ -161,7 +183,11 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
+<<<<<<< HEAD
                           const Text(
+=======
+                          Text(
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                             "รีเซ็ตรหัสผ่าน",
                             style: TextStyle(
                               fontSize: 26,
@@ -237,8 +263,14 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
+<<<<<<< HEAD
                               // แก้ไข: เชื่อมปุ่มกับฟังก์ชัน _handleResetPassword
                               onPressed: _isLoading ? null : _handleResetPassword, 
+=======
+                              onPressed: () {
+                                // Handle Reset Password Logic
+                              },
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
@@ -249,6 +281,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                                 ),
                                 elevation: 3,
                               ),
+<<<<<<< HEAD
                               // แก้ไข: แสดง Loading Indicator เมื่อกำลังโหลด
                               child: _isLoading 
                                 ? const SizedBox(
@@ -266,6 +299,15 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
+=======
+                              child: Text(
+                                "ยืนยัน",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                             ),
                           ),
                         ],
@@ -279,16 +321,27 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                       // Back to Login
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+<<<<<<< HEAD
                                 builder: (context) => const LoginScreen()),
                           );
                         },
                         child: const Text(
+=======
+                                builder: (context) => const LoginPage()),
+                          );
+                        },
+                        child: Text(
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           "กลับไปหน้าเข้าสู่ระบบ",
                           style: TextStyle(
                             color: Colors.white,
@@ -309,4 +362,8 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701

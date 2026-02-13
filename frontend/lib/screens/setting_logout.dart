@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 
 import 'package:flutter_application_1/screens/test.dart';
 
@@ -10,6 +11,18 @@ class SettingLogoutScreen extends StatefulWidget {
 }
 
 class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
+=======
+import 'test.dart';
+
+class SettingLogoutPage extends StatefulWidget {
+  const SettingLogoutPage({super.key});
+
+  @override
+  State<SettingLogoutPage> createState() => _SettingLogoutPageState();
+}
+
+class _SettingLogoutPageState extends State<SettingLogoutPage> {
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   // State Variables
   bool _isPressed = false;
   bool _isMuted = false;
@@ -100,7 +113,11 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
                 if (!mounted) return;
                 Navigator.push(
                   context,
+<<<<<<< HEAD
                   MaterialPageRoute(builder: (context) => const TestScreen()),
+=======
+                  MaterialPageRoute(builder: (context) => const TestPage()),
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                 ).then((_) {
                   setState(() => _isPressed = false);
                 });

@@ -208,6 +208,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.1.0"
+<<<<<<< HEAD
   gotrue:
     dependency: transitive
     description:
@@ -224,6 +225,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+=======
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   hooks:
     dependency: transitive
     description:

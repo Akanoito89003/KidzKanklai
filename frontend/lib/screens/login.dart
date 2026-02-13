@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter_application_1/screens/register.dart';
@@ -14,10 +15,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+=======
+import 'register.dart';
+import 'forgotpw.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   bool _obscureText = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+<<<<<<< HEAD
   late final Stream<AuthState> _authStream;
 
   @override
@@ -35,6 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+=======
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
   @override
   void dispose() {
     _emailController.dispose();
@@ -42,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+<<<<<<< HEAD
   /// 🔐 Login ด้วย Email/Password
   Future<void> _login() async {
     final email = _emailController.text.trim();
@@ -91,19 +109,35 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = const Color(0xFF556AEB);
+=======
+  @override
+  Widget build(BuildContext context) {
+    // Define colors relative to the design (conceptual)
+    final primaryColor = const Color(0xFF556AEB); 
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
     final backgroundColor = Colors.white;
 
     return Scaffold(
       body: Stack(
         children: [
+<<<<<<< HEAD
+=======
+          // Background Image
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
           Positioned.fill(
             child: Image.asset(
               'assets/images/bgRegister.png',
               fit: BoxFit.cover,
             ),
           ),
+<<<<<<< HEAD
           Positioned.fill(
             child: Container(
+=======
+          // Gradient Overlay for readability
+          Positioned.fill(
+             child: Container(
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -116,12 +150,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
+<<<<<<< HEAD
+=======
+          // Content
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+<<<<<<< HEAD
+=======
+                  // Logo
+                  // Logo moved inside card
+
+                  // Login Card
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                   Card(
                     elevation: 8,
                     shape: RoundedRectangleBorder(
@@ -133,10 +178,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+<<<<<<< HEAD
+=======
+                          // Logo
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Image.asset(
                               'assets/images/logo.png',
+<<<<<<< HEAD
                               height: 100,
                               fit: BoxFit.contain,
                             ),
@@ -147,6 +197,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 20),
                           const Text(
+=======
+                              height: 100, 
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          Text(
+                            "ยินดีต้อนรับกลับสู่ห้องเรียน",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                             "เข้าสู่ระบบ",
                             style: TextStyle(
                               fontSize: 26,
@@ -155,7 +220,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 32),
+<<<<<<< HEAD
 
+=======
+                          
+                          // Email Input
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           TextField(
                             controller: _emailController,
                             decoration: InputDecoration(
@@ -170,7 +240,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 16),
+<<<<<<< HEAD
 
+=======
+                          
+                          // Password Input
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           TextField(
                             controller: _passwordController,
                             obscureText: _obscureText,
@@ -197,14 +272,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 10),
+<<<<<<< HEAD
 
+=======
+                          
+                          // Forgot Password
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
                               onPressed: () {
                                 Navigator.push(
                                   context,
+<<<<<<< HEAD
                                   MaterialPageRoute(builder: (context) => const ForgotPWScreen()),
+=======
+                                  MaterialPageRoute(builder: (context) => const ForgotPWPage()),
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                                 );
                               },
                               child: Text(
@@ -214,11 +298,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
+<<<<<<< HEAD
 
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: _login,
+=======
+                          
+                          // Login Button
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Handle Login
+                              },
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
@@ -228,18 +323,37 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 elevation: 3,
                               ),
+<<<<<<< HEAD
                               child: const Text(
                                 "เข้าสู่ระบบ",
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+=======
+                              child: Text(
+                                "เข้าสู่ระบบ",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                               ),
                             ),
                           ),
                           const SizedBox(height: 12),
+<<<<<<< HEAD
 
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: _loginWithGoogle,
+=======
+                          // Google Login Button
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // Handle Google Login
+                              },
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.black,
                                 foregroundColor: Colors.white,
@@ -258,9 +372,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: 36,
                                   ),
                                   const SizedBox(width: 12),
+<<<<<<< HEAD
                                   const Text(
                                     "เข้าสู่ระบบผ่าน Google",
                                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+=======
+                                  Text(
+                                    "เข้าสู่ระบบผ่าน Google",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                                   ),
                                 ],
                               ),
@@ -270,9 +393,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+<<<<<<< HEAD
 
                   const SizedBox(height: 30),
 
+=======
+                  
+                  const SizedBox(height: 30),
+                  
+                  // Sign Up
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -280,10 +410,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
+<<<<<<< HEAD
                             MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
                         child: const Text(
+=======
+                            MaterialPageRoute(builder: (context) => const RegisterPage()),
+                          );
+                        },
+                        child: Text(
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
                           "สร้างบัญชีใหม่",
                           style: TextStyle(
                             color: Colors.white,
@@ -305,3 +442,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a1cf77918108193f7f002afabfdd5ba258c99701
