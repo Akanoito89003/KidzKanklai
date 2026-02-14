@@ -27,7 +27,7 @@ func SetupRouter() *gin.Engine {
 	r.GET("/me/:id", handlers.GetUserProfile)
 	r.POST("/me/update", handlers.UpdateUserProfile)
 	r.GET("/inventory/:id", handlers.GetUserInventory)
-	r.POST("/equip", handlers.EquipItem)
+	r.POST("/equip-item", handlers.EquipItem)
 
 	// Task routes placeholders (Inline handlers can stay or move, let's keep inline for simplicity or move if needed.
 	// The user asked to separate, let's keep them here for now as they are trivial)

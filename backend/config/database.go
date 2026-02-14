@@ -15,7 +15,7 @@ func InitDB() {
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
 		// Default to the previous Supabase URL for convenience (User can change this)
-		connStr = "postgresql://postgres:password123@localhost:5432/kidzkanklai?sslmode=disable"
+		connStr = "postgresql://postgres:242526@localhost:5432/kidzkanklai?sslmode=disable"
 		log.Println("[WARN] Warning: Using default connection string.")
 	}
 
@@ -32,6 +32,10 @@ func InitDB() {
 }
 
 func CreateTables() {
+	// Drop for development schema fix
+	DB.Exec("DROP TABLE IF EXISTS inventory CASCADE")
+	DB.Exec("DROP TABLE IF EXISTS items CASCADE")
+
 	query := `
 	CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
@@ -51,14 +55,23 @@ func CreateTables() {
 		equipped_face TEXT DEFAULT 'happy',
 		stat_intellect INT DEFAULT 0,
 		stat_strength INT DEFAULT 0,
-		stat_creativity INT DEFAULT 0
+		stat_creativity INT DEFAULT 0,
+		equipped_pose INT DEFAULT 0
 	);
 	
+	CREATE TABLE IF NOT EXISTS items (
+		id SERIAL PRIMARY KEY,
+		name TEXT NOT NULL,
+		image_path TEXT NOT NULL,
+		category TEXT NOT NULL,
+		rive_id INT DEFAULT 0
+	);
+
 	CREATE TABLE IF NOT EXISTS inventory (
 		id SERIAL PRIMARY KEY,
 		user_id INT NOT NULL,
-		item_type TEXT NOT NULL,
-		item_id TEXT NOT NULL
+		item_id INT NOT NULL,  -- Foreign Key to items.id
+		obtained_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
 	`
 	_, err := DB.Exec(query)
@@ -81,12 +94,69 @@ func SeedDatabase() {
 		log.Println("[INFO] Seeding database with default user...")
 		_, err = DB.Exec(`
 			INSERT INTO users (username, email, password, level, coins, exp, tickets, vouchers, equipped_skin, equipped_hair, equipped_face) 
-			VALUES ('Tester', 'test@example.com', 'password123', 5, 1000, 500, 10, 5, 'basic_uniform', 'default_blue', 'happy')
+			VALUES ('Tester', 'test@example.com', 'password123', 5, 1000, 500, 10, 5, 'basic_uniform', 'Hair Style 0', 'happy')
 		`)
 		if err != nil {
 			log.Println("[ERROR] Failed to seed user:", err)
 		} else {
 			log.Println("[INFO] Default user created: test@example.com / password123")
 		}
+	} else {
+		// Force update for existing user (during development debugging)
+		log.Println("[INFO] ensuring Tester has Hair Style 0...")
+		DB.Exec("UPDATE users SET equipped_hair = 'Hair Style 0' WHERE email = 'test@example.com'")
+	}
+}
+
+func SeedInventory() {
+	// 1. Seed Items Table First
+	var itemCount int
+	err := DB.QueryRow("SELECT COUNT(*) FROM items").Scan(&itemCount)
+	if err == nil && itemCount == 0 {
+		log.Println("[INFO] Seeding Items table...")
+		items := []struct {
+			Name, Image, Category string
+			RiveID                int
+		}{
+			{"Hair Style 0", "assets/images/Fashion/HairStyle/hair00.PNG", "hair", 0},
+			{"Hair Style 1", "assets/images/Fashion/HairStyle/hair01.PNG", "hair", 1},
+			{"Hair Style 2", "assets/images/Fashion/HairStyle/hair02.PNG", "hair", 2},
+			{"Default Skin", "skin_default.png", "skin", 0},
+			{"Happy Face", "face_happy.png", "face", 0},
+		}
+		for _, item := range items {
+			_, err := DB.Exec("INSERT INTO items (name, image_path, category, rive_id) VALUES ($1, $2, $3, $4)", item.Name, item.Image, item.Category, item.RiveID)
+			if err != nil {
+				log.Println("[ERROR] Failed to insert item:", item.Name, err)
+			}
+		}
+	} else {
+		// Force Update RiveIDs to ensure they match Rive Model (Fixing mismatch issues)
+		log.Println("[INFO] Ensuring Hair Models have correct RiveIDs...")
+		DB.Exec("UPDATE items SET rive_id = 0 WHERE name = 'Hair Style 0'")
+		DB.Exec("UPDATE items SET rive_id = 1 WHERE name = 'Hair Style 1'")
+		DB.Exec("UPDATE items SET rive_id = 2 WHERE name = 'Hair Style 2'")
+	}
+
+	// 2. Seed Inventory (Connect User to Items)
+	var userID int
+	err = DB.QueryRow("SELECT id FROM users WHERE email = 'test@example.com'").Scan(&userID)
+	if err != nil {
+		return
+	}
+
+	var localInvCount int
+	DB.QueryRow("SELECT COUNT(*) FROM inventory WHERE user_id = $1", userID).Scan(&localInvCount)
+	if localInvCount == 0 {
+		log.Println("[INFO] Seeding Inventory for Tester...")
+		// Give all items to tester
+		rows, _ := DB.Query("SELECT id FROM items")
+		defer rows.Close()
+		var itemID int
+		for rows.Next() {
+			rows.Scan(&itemID)
+			DB.Exec("INSERT INTO inventory (user_id, item_id) VALUES ($1, $2)", userID, itemID)
+		}
+		log.Println("[INFO] Inventory populated!")
 	}
 }

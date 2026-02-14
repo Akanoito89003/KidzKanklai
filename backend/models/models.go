@@ -16,6 +16,7 @@ type User struct {
 	EquippedSkin   string `json:"equipped_skin"`
 	EquippedHair   string `json:"equipped_hair"`
 	EquippedFace   string `json:"equipped_face"`
+	EquippedPose   int    `json:"equipped_pose"`
 	StatIntellect  int    `json:"stat_intellect"`
 	StatStrength   int    `json:"stat_strength"`
 	StatCreativity int    `json:"stat_creativity"`
@@ -33,15 +34,18 @@ type UpdateProfileRequest struct {
 	SoundSFX int    `json:"sound_sfx"`
 }
 
-type Item struct {
+type InventoryItem struct {
 	ID       int    `json:"id"`
+	UserID   int    `json:"user_id"`
+	ItemID   int    `json:"item_id"`
 	Name     string `json:"name"`
-	Type     string `json:"type"` // skin, hair, face
-	ImageURL string `json:"image_url"`
+	Image    string `json:"image"`
+	Category string `json:"category"`
+	RiveID   int    `json:"rive_id"`
 }
 
 type EquipRequest struct {
-	UserID int    `json:"user_id"`
-	Type   string `json:"type"`    // skin, hair, face
-	ItemID string `json:"item_id"` // Using string for flexibility with your asset names
+	UserID   int    `json:"user_id"`
+	Category string `json:"category"` // hair, skin, face
+	Name     string `json:"name"`     // Using Name to update the text field for now
 }

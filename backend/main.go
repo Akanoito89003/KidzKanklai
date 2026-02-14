@@ -18,6 +18,7 @@ func main() {
 
 	// 3. Seed Database (Create default user if empty)
 	config.SeedDatabase()
+	config.SeedInventory() // Add Inventory Seed
 
 	// 4. Router
 	r := routes.SetupRouter()

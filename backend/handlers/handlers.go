@@ -56,12 +56,12 @@ func GetUserProfile(c *gin.Context) {
 	err := config.DB.QueryRow(`
 		SELECT id, username, email, level, exp, coins, tickets, vouchers, bio, 
 		       sound_bgm, sound_sfx, equipped_skin, equipped_hair, equipped_face,
-		       stat_intellect, stat_strength, stat_creativity
+		       stat_intellect, stat_strength, stat_creativity, equipped_pose
 		FROM users WHERE id = $1`, id,
 	).Scan(
 		&u.ID, &u.Username, &u.Email, &u.Level, &u.Exp, &u.Coins, &u.Tickets, &u.Vouchers, &u.Bio,
 		&u.SoundBGM, &u.SoundSFX, &u.EquippedSkin, &u.EquippedHair, &u.EquippedFace,
-		&u.StatIntellect, &u.StatStrength, &u.StatCreativity,
+		&u.StatIntellect, &u.StatStrength, &u.StatCreativity, &u.EquippedPose,
 	)
 
 	if err != nil {
@@ -92,24 +92,30 @@ func UpdateUserProfile(c *gin.Context) {
 
 func GetUserInventory(c *gin.Context) {
 	userID := c.Param("id")
-	rows, err := config.DB.Query("SELECT item_type, item_id FROM inventory WHERE user_id = $1", userID)
+	// Join inventory with items to get details
+	rows, err := config.DB.Query(`
+		SELECT i.id, i.user_id, i.item_id, t.name, t.image_path, t.category, t.rive_id 
+		FROM inventory i
+		JOIN items t ON i.item_id = t.id
+		WHERE i.user_id = $1
+	`, userID)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	defer rows.Close()
 
-	var items []map[string]string
+	var inventory []models.InventoryItem
 	for rows.Next() {
-		var iType, iID string
-		if err := rows.Scan(&iType, &iID); err == nil {
-			items = append(items, map[string]string{
-				"type": iType,
-				"id":   iID,
-			})
+		var item models.InventoryItem
+		if err := rows.Scan(&item.ID, &item.UserID, &item.ItemID, &item.Name, &item.Image, &item.Category, &item.RiveID); err != nil {
+			continue
 		}
+		inventory = append(inventory, item)
 	}
-	c.JSON(http.StatusOK, gin.H{"items": items})
+
+	c.JSON(http.StatusOK, inventory)
 }
 
 func EquipItem(c *gin.Context) {
@@ -119,26 +125,29 @@ func EquipItem(c *gin.Context) {
 		return
 	}
 
-	var field string
-	switch req.Type {
-	case "skin":
-		field = "equipped_skin"
+	// Dynamic column update based on Category
+	var column string
+	switch req.Category {
 	case "hair":
-		field = "equipped_hair"
+		column = "equipped_hair"
+	case "skin":
+		column = "equipped_skin"
 	case "face":
-		field = "equipped_face"
+		column = "equipped_face"
 	default:
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid item type"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid category"})
 		return
 	}
 
-	// Safe update because field is controlled
-	query := "UPDATE users SET " + field + " = $1 WHERE id = $2"
-	_, err := config.DB.Exec(query, req.ItemID, req.UserID)
+	// Update the user's equipped item
+	// Note: We are storing the Item Name (e.g. "Hair Style 1") in the users table for specific compatibility with Flutter parsing
+	query := "UPDATE users SET " + column + " = $1 WHERE id = $2"
+	_, err := config.DB.Exec(query, req.Name, req.UserID)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to equip: " + err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Equipped successfully"})
+
+	c.JSON(http.StatusOK, gin.H{"message": "Equipped successfully", "equipped": req.Name})
 }

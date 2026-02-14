@@ -13,9 +13,31 @@ import 'screens/achievement_screen.dart';
 import 'screens/lootbox_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/club_screen.dart';
+import 'package:provider/provider.dart';
+import 'providers/user_provider.dart';
 
-void main() {
-  runApp(const KidzKanklaiApp());
+import 'package:flutter/services.dart';
+import 'utils/rive_cache.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Pre-load the heavy 5MB Rive file
+  // Pre-load the heavy 5MB Rive file (Fire and forget, don't await)
+  RiveCache().loadAsset('assets/animation/Model1110.riv').then((_) {
+     print("Main: Rive Preload Complete.");
+  }).catchError((e) {
+     print("Main: Rive Preload Failed: $e");
+  });
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: const KidzKanklaiApp(),
+    ),
+  );
 }
 
 class KidzKanklaiApp extends StatelessWidget {
@@ -31,13 +53,13 @@ class KidzKanklaiApp extends StatelessWidget {
         fontFamily: 'Roboto',
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      initialRoute: '/lobby', // Bypass Login for Dev
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/lobby': (context) => LobbyScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
-        '/settings': (context) => SettingsScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
+        '/lobby': (context) => LobbyScreen(user: User(id: 1, username: "Tester", email: "test@example.com", level: 5, exp: 500, coins: 1000, tickets: 10, vouchers: 5, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "basic_uniform", equippedHair: "default_blue", equippedFace: "happy", statIntellect: 0, statStrength: 0, statCreativity: 0, equippedPose: 0)),
+        '/fashion': (context) => FashionScreen(user: User(id: 1, username: "Tester", email: "test@example.com", level: 5, exp: 500, coins: 1000, tickets: 10, vouchers: 5, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "basic_uniform", equippedHair: "default_blue", equippedFace: "happy", statIntellect: 0, statStrength: 0, statCreativity: 0, equippedPose: 0)),
+        '/settings': (context) => SettingsScreen(user: User(id: 1, username: "Tester", email: "test@example.com", level: 5, exp: 500, coins: 1000, tickets: 10, vouchers: 5, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "basic_uniform", equippedHair: "default_blue", equippedFace: "happy", statIntellect: 0, statStrength: 0, statCreativity: 0, equippedPose: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
         '/profile': (context) => const ProfileScreen(),

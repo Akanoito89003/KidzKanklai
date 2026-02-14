@@ -42,10 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage('https://images.unsplash.com/photo-1623835626927-444f62771805?q=80&w=1968&auto=format&fit=crop'), // Background placeholder
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blue.shade100, Colors.purple.shade100],
           ),
         ),
         child: Center(

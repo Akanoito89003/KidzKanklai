@@ -21,6 +21,7 @@ class User {
   final int statIntellect;
   final int statStrength;
   final int statCreativity;
+  final int equippedPose; // New Field
 
   User({
     required this.id,
@@ -40,6 +41,7 @@ class User {
     required this.statIntellect,
     required this.statStrength,
     required this.statCreativity,
+    required this.equippedPose, // Requesting New Field
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -61,20 +63,33 @@ class User {
       statIntellect: json['stat_intellect'] ?? 0,
       statStrength: json['stat_strength'] ?? 0,
       statCreativity: json['stat_creativity'] ?? 0,
+      equippedPose: json['equipped_pose'] ?? 0, // Requesting New Field
     );
   }
 }
 
 class InventoryItem {
-  final String type;
-  final String id;
+  final int id;
+  final String name;
+  final String imagePath;
+  final String category;
+  final int riveId;
   
-  InventoryItem({required this.type, required this.id});
+  InventoryItem({
+    required this.id,
+    required this.name,
+    required this.imagePath,
+    required this.category,
+    required this.riveId,
+  });
 
   factory InventoryItem.fromJson(Map<String, dynamic> json) {
     return InventoryItem(
-      type: json['type'] ?? '',
-      id: json['id'] ?? '',
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      imagePath: json['image'] ?? '',
+      category: json['category'] ?? 'item',
+      riveId: json['rive_id'] ?? 0,
     );
   }
 }
@@ -95,7 +110,6 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        // Login returns basic info, might want to fetch full profile after
         return User.fromJson(jsonDecode(response.body));
       }
     } catch (e) {
@@ -140,8 +154,7 @@ class ApiService {
     try {
       final response = await http.get(Uri.parse('$baseUrl/inventory/$userId'));
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final list = data['items'] as List;
+        final list = (jsonDecode(response.body) as List?) ?? [];
         return list.map((e) => InventoryItem.fromJson(e)).toList();
       }
     } catch (e) {
@@ -151,15 +164,15 @@ class ApiService {
   }
 
   // Equip
-  static Future<bool> equipItem(int userId, String type, String itemId) async {
+  static Future<bool> equipItem(int userId, String category, String name) async {
      try {
       final response = await http.post(
-        Uri.parse('$baseUrl/equip'),
+        Uri.parse('$baseUrl/equip-item'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "user_id": userId,
-          "type": type,
-          "item_id": itemId
+          "category": category,
+          "name": name
         }),
       );
       return response.statusCode == 200;
