@@ -23,7 +23,7 @@ class _TestScreenState extends State<TestScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgSetting.png',
+              'assets/images/background/bg1.png',
               fit: BoxFit.cover,
             ),
           ),

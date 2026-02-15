@@ -41,7 +41,7 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/background/bg1.png', fit: BoxFit.cover),
           ),
 
           _buildTopBar(),
@@ -229,8 +229,8 @@ class _NotificationDetailScreenState extends State<NotificationDetailScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'lib/assets/bt-hover-Back.png'
-                    : 'lib/assets/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),

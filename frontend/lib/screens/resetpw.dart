@@ -112,7 +112,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgRegister.png',
+              'assets/images/background/bg2.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -155,7 +155,7 @@ class _ResetPWScreenState extends State<ResetPWScreen> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Image.asset(
-                              'assets/images/logo.png',
+                              'assets/images/icon/logo.png',
                               height: 100,
                               fit: BoxFit.contain,
                             ),

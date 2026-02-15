@@ -60,7 +60,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   /// Widget to display the logo image
   Widget _buildLogo() {
     return Image.asset(
-      'assets/images/icon-white-loading.png',
+      'assets/images/icon/icon-white-loading.png',
       height: 120,
       fit: BoxFit.contain,
     );

@@ -38,7 +38,7 @@ class CustomTopBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildTopBarItem(
-                    imagePath: 'lib/assets/coin.png',
+                    imagePath: 'assets/images/item/coin.png',
                     value: '${user?.coins ?? 0}',
                   ),
                   Container(
@@ -47,7 +47,7 @@ class CustomTopBar extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                   _buildTopBarItem(
-                    imagePath: 'lib/assets/Ticket-ภารกิจ_img.png',
+                    imagePath: 'assets/images/item/Ticket_quest_img.png',
                     value: '${user?.tickets ?? 0}/7',
                   ),
                   Container(
@@ -56,7 +56,7 @@ class CustomTopBar extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                   _buildTopBarItem(
-                    imagePath: 'lib/assets/Ticket-เข้าสอบ_img.png',
+                    imagePath: 'assets/images/item/Ticket_exam_img.png',
                     value: '${user?.vouchers ?? 0}/3',
                   ),
                 ],
@@ -68,7 +68,7 @@ class CustomTopBar extends StatelessWidget {
 
           // Notification Button (นอกกรอบ)
           _buildTopBarIconButton(
-            imagePath: 'lib/assets/notification_icon.png',
+            imagePath: 'assets/images/icon/icon-notification.png',
             onTap: () {
               if (onNotificationTapped != null) {
                 onNotificationTapped!();
@@ -82,7 +82,7 @@ class CustomTopBar extends StatelessWidget {
 
           // Settings Button (นอกกรอบ)
           _buildTopBarIconButton(
-            imagePath: 'lib/assets/setting_icon.png',
+            imagePath: 'assets/images/icon/icon-setting.png',
             onTap: () {
               if (onSettingsTapped != null) {
                 onSettingsTapped!();

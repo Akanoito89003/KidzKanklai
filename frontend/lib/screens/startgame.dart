@@ -182,7 +182,7 @@ class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProv
         children: [
           // 1. Background Image
           Image.asset(
-            'assets/images/bgStartgame.png',
+            'assets/images/background/bg5.png',
             fit: BoxFit.cover,
           ),
           
@@ -236,7 +236,7 @@ class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProv
   /// Reusable Logo Image Widget
   Widget _buildLogoImage({required double width}) {
     return Image.asset(
-      'assets/images/logo.png',
+      'assets/images/icon/logo.png',
       width: width,
       fit: BoxFit.contain,
     );
@@ -291,7 +291,7 @@ class _StartGameScreenState extends State<StartGameScreen> with SingleTickerProv
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/icon-loading.png',
+                    'assets/images/icon/icon-black-loading.png',
                     width: 45,
                     height: 45,
                   ),

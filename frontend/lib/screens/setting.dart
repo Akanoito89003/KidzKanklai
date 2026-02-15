@@ -67,7 +67,7 @@ class _SettingScreenState extends State<SettingScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgSetting.png',
+              'assets/images/background/bg1.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -160,8 +160,8 @@ class _SettingScreenState extends State<SettingScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'assets/images/bt-hover-Back.png'
-                    : 'assets/images/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
@@ -183,7 +183,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconPerson.png',
+                'assets/images/icon/iconPerson.png',
                 width: 40,
                 height: 40,
               ),
@@ -256,7 +256,7 @@ class _SettingScreenState extends State<SettingScreen> {
           
           // --- Google Row ---
           _buildProviderRow(
-            iconPath: 'assets/images/IconGoogle.png',
+            iconPath: 'assets/images/icon/iconGoogle.png',
             label: 'Google',
             isConnected: isGoogleConnected,
           ),
@@ -265,7 +265,7 @@ class _SettingScreenState extends State<SettingScreen> {
           
           // --- Email Row ---
           _buildProviderRow(
-            iconPath: 'assets/images/IconEmail.png',
+            iconPath: 'assets/images/icon/iconEmail.png',
             label: 'Email',
             isConnected: isEmailConnected,
           ),
@@ -321,7 +321,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconPerson.png',
+                'assets/images/icon/iconPerson.png',
                 width: 40,
                 height: 40,
               ),
@@ -348,7 +348,7 @@ class _SettingScreenState extends State<SettingScreen> {
           // Guest Character Image
           Center(
             child: Image.asset(
-              'assets/images/setting-character.png',
+              'assets/images/profile/setting-character.png',
               width: 140,
             ),
           ),
@@ -410,7 +410,7 @@ class _SettingScreenState extends State<SettingScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconVolume.png',
+                'assets/images/icon/iconVolume.png',
                 width: 40,
                 height: 40,
               ),

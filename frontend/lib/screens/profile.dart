@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Background Image
           SizedBox.expand(
             child: Image.asset(
-              'assets/images/bgProfile.png',
+              'assets/images/background/bg4.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -242,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             bottom: 0,
             right: 0,
             child: Image.asset(
-              'assets/images/designProfile.png',
+              'assets/images/design/design2.png',
               height: 180, 
               fit: BoxFit.contain,
             ),
@@ -251,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             top: 3,
             right: 3,
             child: Image.asset(
-              'assets/images/design1.png',
+              'assets/images/design/design1.png',
               width: 50,
               fit: BoxFit.contain,
             ),
@@ -298,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(8),
                 child: const CircleAvatar(
                   radius: 54,
-                  backgroundImage: AssetImage('assets/images/profile_img.png'),
+                  backgroundImage: AssetImage('assets/images/profile/profile_img.png'),
                 ),
               ),
             ],
@@ -372,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(width: 5),
               Image.asset(
-                'assets/images/iconCopy.png',
+                'assets/images/icon/iconCopy.png',
                 width: 16,
                 height: 16,
               ),
@@ -444,7 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             },
             child: Image.asset(
-              'assets/images/iconEdit.png',
+              'assets/images/icon/iconEdit.png',
               width: iconSize,
               height: iconSize,
               color: iconColor,
@@ -520,7 +520,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         _buildBoxHeader(
-          iconPath: 'assets/images/statlogo-img.png',
+          iconPath: 'assets/images/icon/icon-white-loading.png',
           title: "ค่าความสามารถ",
         ),
         Container(
@@ -531,7 +531,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/profile-character.png',
+                'assets/images/profile/profile-character.png',
                 height: 160,
                 fit: BoxFit.contain,
               ),
@@ -540,11 +540,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     // [UPDATED] ใช้ตัวแปร Stat ที่ดึงมาจาก DB
-                    _buildStatRow('assets/images/stat-int-img.png', "ความฉลาด", _intStat),
+                    _buildStatRow('assets/images/profile/stat-int-img.png', "ความฉลาด", _intStat),
                     const SizedBox(height: 8),
-                    _buildStatRow('assets/images/stat-str-img.png', "ความแข็งแรง", _strStat),
+                    _buildStatRow('assets/images/profile/stat-str-img.png', "ความแข็งแรง", _strStat),
                     const SizedBox(height: 8),
-                    _buildStatRow('assets/images/stat-cre-img.png', "ความคิดสร้างสรรค์", _creStat),
+                    _buildStatRow('assets/images/profile/stat-cre-img.png', "ความคิดสร้างสรรค์", _creStat),
                   ],
                 ),
               ),
@@ -609,7 +609,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         _buildBoxHeader(
-          iconPath: 'assets/images/IconAcheivement.png',
+          iconPath: 'assets/images/icon/iconAcheivement.png',
           title: "ความสำเร็จ 3/18",
         ),
         Container(
@@ -619,11 +619,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _buildAchievementItem('assets/images/achievement1.png'),
+              _buildAchievementItem('assets/images/achievement/achievement1.png'),
               const SizedBox(width: 10),
-              _buildAchievementItem('assets/images/achievement2.png'),
+              _buildAchievementItem('assets/images/achievement/achievement2.png'),
               const SizedBox(width: 10),
-              _buildAchievementItem('assets/images/achievement3.png'),
+              _buildAchievementItem('assets/images/achievement/achievement3.png'),
             ],
           ),
         ),
@@ -684,7 +684,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Spacer(),
             Image.asset(
-              'assets/images/design1.png',
+              'assets/images/design/design1.png',
               width: 50,
               fit: BoxFit.contain,
             ),

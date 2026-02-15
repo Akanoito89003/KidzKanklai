@@ -99,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgRegister.png',
+              'assets/images/background/bg2.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset(
-                            'assets/images/logo.png',
+                            'assets/images/icon/logo.png',
                             height: 100,
                           ),
                           const SizedBox(height: 10),
@@ -288,7 +288,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.asset(
-                                    'assets/images/IconGoogle.png',
+                                    'assets/images/icon/iconGoogle.png',
                                     height: 36,
                                     width: 36,
                                   ),

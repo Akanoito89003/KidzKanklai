@@ -20,21 +20,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
   // Right Menu Items
   List<MenuItem> get _menuItems => [
     MenuItem(
-      imagePath: "lib/assets/achievement_icon.png",
+      imagePath: "assets/images/icon/iconAchievement.png",
       label: 'ความสำเร็จ',
       onTap: () {
         Navigator.pushNamed(context, '/achievement');
       },
     ),
     MenuItem(
-      imagePath: "lib/assets/quest_icon.png",
+      imagePath: "assets/images/icon/iconQuest.png",
       label: 'ภารกิจ',
       onTap: () {
         Navigator.pushNamed(context, '/quest');
       },
     ),
     MenuItem(
-      imagePath: "lib/assets/Gasha.png",
+      imagePath: "assets/images/item/Gasha.png",
       label: 'กล่องสุ่ม',
       onTap: () {
         Navigator.pushNamed(context, '/lootbox');
@@ -48,7 +48,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("lib/assets/Lobby.png"),
+            image: AssetImage("assets/images/background/bg3.png"),
             fit: BoxFit.cover,
           ),
         ),

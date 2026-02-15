@@ -23,7 +23,7 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgSetting.png',
+              'assets/images/background/bg1.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -105,8 +105,8 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'assets/images/bt-hover-Back.png'
-                    : 'assets/images/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
@@ -125,7 +125,7 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconPerson.png',
+                'assets/images/icon/iconPerson.png',
                 width: 40,
                 height: 40,
               ),
@@ -195,7 +195,7 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconGoogle.png',
+                'assets/images/icon/iconGoogle.png',
                 width: 40,
                 height: 40,
               ),
@@ -230,7 +230,7 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconEmail.png',
+                'assets/images/icon/iconEmail.png',
                 width: 40,
                 height: 40,
               ),
@@ -257,7 +257,7 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconVolume.png',
+                'assets/images/icon/iconVolume.png',
                 width: 40,
                 height: 40,
               ),
