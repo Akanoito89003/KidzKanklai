@@ -28,7 +28,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       name: 'นักวางแผนมือใหม่',
       description:
           'ราชวิวความสำเร็จจบของการที่มีความมานับหมดที่ต้องทำหว้ามองเอียนแอปริเคชัน',
-      imagePath: 'lib/assets/achievement_1.png',
+      imagePath: 'assets/images/achievement/achievement_1.png',
       isUnlocked: true,
       hasNotification: false,
       reward: AchievementReward(type: 'EXP', amount: 100),
@@ -38,7 +38,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '2',
       name: 'ผู้ท้าทายตัวเอง',
       description: 'ทำภารกิจยากสำเร็จ',
-      imagePath: 'lib/assets/achievement_2.png',
+      imagePath: 'assets/images/achievement/achievement_2.png',
       isUnlocked: true,
       hasNotification: true,
       reward: AchievementReward(type: 'EXP', amount: 100),
@@ -58,7 +58,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '4',
       name: 'ผู้เชี่ยวชาญ',
       description: 'ทำภารกิจทั้งหมดสำเร็จ',
-      imagePath: 'lib/assets/achievement_4.png',
+      imagePath: 'assets/images/achievement/achievement_4.png',
       isUnlocked: false,
       hasNotification: false,
       reward: AchievementReward(type: 'EXP', amount: 500),
@@ -78,7 +78,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '6',
       name: 'ผู้พิชิตเวลา',
       description: 'ทำภารกิจให้เสร็จภายในเวลาที่กำหนด',
-      imagePath: 'lib/assets/achievement_6.png',
+      imagePath: 'assets/images/achievement/achievement_6.png',
       isUnlocked: true,
       hasNotification: false,
       reward: AchievementReward(type: 'EXP', amount: 200),
@@ -102,7 +102,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/background/bg1.png', fit: BoxFit.cover),
           ),
 
           Padding(
@@ -265,8 +265,8 @@ class _AchievementScreenState extends State<AchievementScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'lib/assets/bt-hover-Back.png'
-                    : 'lib/assets/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
@@ -423,7 +423,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                     children: [
                       // EXP Image
                       Image.asset(
-                        "lib/assets/EXP.png",
+                        "assets/images/item/EXP.png",
                         width: 40,
                         height: 40,
                         fit: BoxFit.contain,
@@ -572,7 +572,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
               children: [
                 // 🔹 รูปด้านหน้า
                 Image.asset(
-                  'lib/assets/achievement_icon.png',
+                  'assets/assets/icon/iconAchievement_icon.png',
                   width: 32,
                   height: 32,
                   fit: BoxFit.contain,

@@ -24,7 +24,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgSetting.png',
+              'assets/images/background/bg1.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -107,8 +107,8 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'assets/images/bt-hover-Back.png'
-                    : 'assets/images/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
@@ -129,7 +129,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconPerson.png',
+                'assets/images/icon/iconPerson.png',
                 width: 40,
                 height: 40,
               ),
@@ -156,7 +156,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
           // Guest Character Image
           Center(
             child: Image.asset(
-              'assets/images/setting-character.png',
+              'assets/images/profile/setting-character.png',
               width: 140,
             ),
           ),
@@ -218,7 +218,7 @@ class _SettingLogoutScreenState extends State<SettingLogoutScreen> {
           Row(
             children: [
               Image.asset(
-                'assets/images/IconVolume.png',
+                'assets/images/icon/iconVolume.png',
                 width: 40,
                 height: 40,
               ),

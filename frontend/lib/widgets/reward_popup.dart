@@ -226,7 +226,7 @@ class _RewardPopupState extends State<RewardPopup>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            "lib/assets/EXP.png",
+            "assets/images/item/EXP.png",
             width: 40,
             height: 40,
             fit: BoxFit.contain,

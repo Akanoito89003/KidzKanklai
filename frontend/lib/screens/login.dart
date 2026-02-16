@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bgRegister.png',
+              'assets/images/background/bg2.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Image.asset(
-                              'assets/images/logo.png',
+                              'assets/images/icon/logo.png',
                               height: 100,
                               fit: BoxFit.contain,
                             ),
@@ -253,7 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Image.asset(
-                                    'assets/images/IconGoogle.png',
+                                    'assets/images/icon/iconGoogle.png',
                                     height: 36,
                                     width: 36,
                                   ),

@@ -106,13 +106,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
           Positioned(
             left: 0,
             bottom: 0,
-            child: Image.asset("lib/assets/star-1.png"),
+            child: Image.asset("assets/images/design/design-left.png"),
           ),
 
           Positioned(
             right: 0,
             bottom: 0,
-            child: Image.asset("lib/assets/star-2.png"),
+            child: Image.asset("assets/images/design/design-right.png"),
           ),
 
           // Content button
@@ -139,25 +139,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
                         children: [
                           _buildNavItem(
                             index: 0,
-                            imagePath: "lib/assets/fashion_icon.png",
+                            imagePath: "assets/images/icon/icon-fashion.png",
                             label: 'แฟชั่น',
                             onTap: onFashionTapped,
                           ),
                           _buildNavItem(
                             index: 1,
-                            imagePath: "lib/assets/room_icon.png",
+                            imagePath: "assets/images/icon/icon-room.png",
                             label: 'ห้องรับรอง',
                             onTap: onRoomTapped,
                           ),
                           _buildNavItem(
                             index: 2,
-                            imagePath: "lib/assets/map_icon.png",
+                            imagePath: "assets/images/icon/icon-map.png",
                             label: 'แผนที่',
                             onTap: onMapTapped,
                           ),
                           _buildNavItem(
                             index: 3,
-                            imagePath: "lib/assets/club_icon.png",
+                            imagePath: "assets/images/icon/icon-club.png",
                             label: 'ชมรม',
                             onTap: onClubTapped,
                           ),
@@ -221,7 +221,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
-                                  'lib/assets/profile_img.png',
+                                  'assets/images/profile/profile_img.png',
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     return _buildDefaultAvatar();
@@ -230,7 +230,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                               },
                             )
                           : Image.asset(
-                              'lib/assets/profile_img.png',
+                              'assets/images/profile/profile_img.png',
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return _buildDefaultAvatar();

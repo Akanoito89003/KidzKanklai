@@ -31,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       notifications = [
         NotificationItem(
           id: '1',
-          imagePath: 'lib/assets/quest_1_icon.png',
+          imagePath: 'assets/images/icon/trophy.png',
           title: 'เควส Normal ใกล้หมดเวลา!',
           description:
               'ภารกิจ "สรุปคณิตบทที่ 1" ของคุณจะหมดเวลาในอีก 1 ชั่วโมง',
@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         NotificationItem(
           id: '2',
-          imagePath: 'lib/assets/acheivement_icon.png',
+          imagePath: 'assets/images/achievement/iconAcheivement.png',
           title: 'ปลดล็อกความสำเร็จใหม่',
           description:
               'ยินดีด้วย! คุณปลดล็อก "นักวางแผนมือใหม่" แล้ว อย่าลืมเข้าไปรับ...',
@@ -49,7 +49,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         NotificationItem(
           id: '3',
-          imagePath: 'lib/assets/club_1_icon.png',
+          imagePath: 'assets/images/icon/communication.png',
           title: 'ภารกิจใหม่จากชมรม',
           description:
               'หัวหน้าชมรมได้สร้าง "เควสติวหนังสือ" เข้าไปทำเพื่อรับ 200...',
@@ -58,7 +58,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         NotificationItem(
           id: '4',
-          imagePath: 'lib/assets/exam_icon.png',
+          imagePath: 'assets/images/icon/education.png',
           title: 'คุณพร้อมสอบแล้ว!',
           description:
               'ค่าความสามารถของคุณถึงเกณฑ์แล้ว คุณสามารถใช้สิทธิเข้า...',
@@ -114,7 +114,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('lib/assets/BG.png', fit: BoxFit.cover),
+            child: Image.asset('assets/images/background/bg1.png', fit: BoxFit.cover),
           ),
 
           _buildTopBar(),
@@ -233,8 +233,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'lib/assets/bt-hover-Back.png'
-                    : 'lib/assets/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
@@ -433,7 +433,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 child: Image.asset(
                   item.imagePath.isNotEmpty
                       ? item.imagePath
-                      : 'lib/assets/placeholder.png',
+                      : 'assets/images/placeholder.png',
                   fit: BoxFit.contain,
                   errorBuilder: (_, __, ___) =>
                       const Icon(Icons.image_not_supported),
