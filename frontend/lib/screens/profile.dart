@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http; // เพิ่ม import นี้
+import 'dart:convert'; // สำหรับ jsonEncode
+
+import 'package:flutter_application_1/config/app_config.dart'; // [ADDED] สำหรับดึง baseUrl
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -32,39 +37,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _fetchUserProfile();
   }
 
-  // ฟังก์ชันคำนวณ Level และ EXP ตาม Logic ที่กำหนด
-  void _calculateLevelInfo(int totalExp) {
-    int level = 1;
+  // [UPDATED] ปรับ Logic ให้รับ Level จาก DB แล้วคำนวณแค่เศษ EXP สำหรับหลอด
+  void _updateLevelUI(int dbLevel, int totalExp) {
     int remainingExp = totalExp;
-    int requiredExp = 0;
+    int requiredExpForNextLevel = 0;
 
-    while (true) {
-      // สูตรคำนวณ EXP ที่ต้องการในแต่ละเลเวล
-      if (level < 6) {
-        // level 1-5 : 40 * L
-        requiredExp = 40 * level;
+    // วนลูปเพื่อหักลบ EXP ของเลเวลก่อนหน้าออกให้หมด
+    // เพื่อให้เหลือแค่ "EXP ปัจจุบันในเลเวลนี้" (เช่น เลเวล 2 มี exp 10/80)
+    for (int i = 1; i < dbLevel; i++) {
+      int expUsed = 0;
+      if (i < 6) {
+        expUsed = 40 * i;
       } else {
-        // level 6+ : 200 + L^2
-        requiredExp = 200 + (level * level);
+        expUsed = 200 + (i * i);
       }
+      remainingExp -= expUsed;
+    }
 
-      if (remainingExp >= requiredExp) {
-        remainingExp -= requiredExp;
-        level++;
-      } else {
-        // EXP ไม่พออัปเลเวล จบการคำนวณที่เลเวลนี้
-        break;
-      }
+    // คำนวณ Max EXP ของเลเวลปัจจุบัน (เพื่อเอาไปทำตัวหาร)
+    if (dbLevel < 6) {
+      requiredExpForNextLevel = 40 * dbLevel;
+    } else {
+      requiredExpForNextLevel = 200 + (dbLevel * dbLevel);
     }
 
     if (mounted) {
       setState(() {
-        _level = level;
-        _currentExp = remainingExp;
-        _nextLevelExp = requiredExp;
-        // คำนวณ % (กันหารด้วย 0)
-        _expPercent = (_nextLevelExp > 0) 
-            ? (_currentExp / _nextLevelExp).clamp(0.0, 1.0) 
+        _level = dbLevel; // ใช้ Level จาก DB โดยตรง
+        _currentExp = remainingExp; // EXP ที่หักลบแล้ว
+        _nextLevelExp = requiredExpForNextLevel; // เป้าหมายเลเวลถัดไป
+        
+        // คำนวณ % หลอดเลือด
+        _expPercent = (_nextLevelExp > 0)
+            ? (_currentExp / _nextLevelExp).clamp(0.0, 1.0)
             : 0.0;
       });
     }
@@ -76,41 +81,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (user == null) return;
 
       setState(() {
-        _uid = user.id.substring(0, 8); // ตัด UID มาแสดงสั้นๆ
+        _uid = user.id.substring(0, 8);
       });
 
-      // 1. ดึงข้อมูล Profile (ชื่อ, Bio)
+      // 1. ดึงข้อมูล Profile (เหมือนเดิม)
       final profileData = await _supabase
           .from('user_profiles')
-          .select('user_name, user_detail')
-          .eq('user_id', user.id)
+          .select('name, detail')
+          .eq('id', user.id) // แก้ตรงนี้ให้ตรงกับ PK ของคุณ (id หรือ user_id)
           .maybeSingle();
 
       if (profileData != null) {
         setState(() {
-          _displayName = profileData['user_name'] ?? "No Name";
-          _displayBio = profileData['user_detail'] ?? "ยังไม่มีคำแนะนำตัว";
+          _displayName = profileData['name'] ?? "No Name";
+          _displayBio = profileData['detail'] ?? "ยังไม่มีคำแนะนำตัว";
         });
       }
 
-      // 2. ดึงข้อมูล Character (Stats, EXP)
+      // 2. ดึงข้อมูล Character (Stats, EXP และ ✅ LEVEL)
       final charData = await _supabase
           .from('characters')
-          .select('character_experience, character_intelligence, character_strength, character_creative')
+          .select('level, experience, intelligence, strength, creative') // [ADDED] เพิ่ม level
           .eq('user_id', user.id)
           .maybeSingle();
 
       if (charData != null) {
-        // อัปเดต Stat
         setState(() {
-          _intStat = charData['character_intelligence'].toString();
-          _strStat = charData['character_strength'].toString();
-          _creStat = charData['character_creative'].toString();
+          _intStat = charData['intelligence'].toString();
+          _strStat = charData['strength'].toString();
+          _creStat = charData['creative'].toString();
         });
 
-        // คำนวณ Level จาก Total EXP
-        final totalExp = charData['character_experience'] as int? ?? 0;
-        _calculateLevelInfo(totalExp);
+        // [UPDATED] ส่งทั้ง Level และ EXP ไปคำนวณ UI
+        final dbLevel = charData['level'] as int? ?? 1;
+        final totalExp = charData['experience'] as int? ?? 0;
+        
+        _updateLevelUI(dbLevel, totalExp); 
       }
 
     } catch (e) {
@@ -118,6 +124,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // ✅ [เพิ่มฟังก์ชันนี้] เพื่อยิงไปหา Go Backend
+  Future<bool> _updateProfileViaApi(String column, String value) async {
+    try {
+      // 1. ดึง Token ของ User ปัจจุบันเพื่อยืนยันตัวตน
+      final session = _supabase.auth.currentSession;
+      if (session == null) return false;
+      final token = session.accessToken;
+
+      String endpoint = "";
+      Map<String, String> body = {};
+
+      // 2. เลือก Route และเตรียมข้อมูลให้ตรงกับที่ Go ต้องการ
+      if (column == 'user_name') {
+        endpoint = "/profile/name";
+        body = {"name": value}; // Go struct: UpdateNameInput { Name }
+      } else if (column == 'user_detail') {
+        endpoint = "/profile/bio";
+        body = {"bio": value};  // Go struct: UpdateBioInput { Bio }
+      } else {
+        return false;
+      }
+
+      // 3. ยิง Request
+      final url = Uri.parse('${AppConfig.baseUrl}$endpoint');
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // ส่ง Token ไปให้ Go ตรวจสอบ
+        },
+        body: jsonEncode(body),
+      );
+
+      // 4. เช็คผลลัพธ์ (200 OK)
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        debugPrint("API Error: ${response.body}");
+        return false;
+      }
+    } catch (e) {
+      debugPrint("Network Error: $e");
+      return false;
+    }
+  }
+
+  // 🔄 [แก้ไขฟังก์ชันนี้] เปลี่ยนจาก update supabase เป็นเรียก API แทน
   void _showEditDialog(String title, String currentValue, String columnToUpdate) {
     final TextEditingController controller = TextEditingController(text: currentValue);
 
@@ -138,14 +191,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ElevatedButton(
               onPressed: () async {
                 final newValue = controller.text.trim();
-                if (newValue.isNotEmpty) {
-                  try {
-                    final userId = _supabase.auth.currentUser!.id;
-                    await _supabase.from('user_profiles').update({
-                      columnToUpdate: newValue
-                    }).eq('user_id', userId);
+                
+                // อนุญาตให้ Bio เป็นค่าว่างได้ แต่ชื่อห้ามว่าง
+                if (columnToUpdate == 'user_name' && newValue.isEmpty) return;
 
-                    if (mounted) {
+                // ✅ เรียกใช้ฟังก์ชันยิง API
+                final success = await _updateProfileViaApi(columnToUpdate, newValue);
+
+                if (success) {
+                   if (mounted) {
                       setState(() {
                         if (columnToUpdate == 'user_name') _displayName = newValue;
                         if (columnToUpdate == 'user_detail') _displayBio = newValue;
@@ -155,11 +209,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SnackBar(content: Text('บันทึกข้อมูลเรียบร้อย')),
                       );
                     }
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
-                    );
-                  }
+                } else {
+                   if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('เกิดข้อผิดพลาดในการบันทึก')),
+                      );
+                   }
                 }
               },
               child: const Text("บันทึก"),

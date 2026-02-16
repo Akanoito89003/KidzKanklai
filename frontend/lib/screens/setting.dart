@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/lobby.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'package:flutter_application_1/screens/test.dart'; // ตรวจสอบว่ามีไฟล์นี้อยู่ หรือเปลี่ยนเป็นหน้าอื่นที่ต้องการ
+import 'package:flutter_application_1/services/audio_manager.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -13,6 +13,8 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   // State Variables
   bool _isPressed = false;
+  
+  // [UPDATED] รับค่าจาก AudioManager แทนการ Hardcode
   bool _isMuted = false;
   double _musicVolume = 0.7;
   double _sfxVolume = 0.7;
@@ -20,20 +22,32 @@ class _SettingScreenState extends State<SettingScreen> {
   // Auth State
   User? _currentUser;
   final _supabase = Supabase.instance.client;
+  
+  // [ADDED] ตัวจัดการเสียง
+  final AudioManager _audioManager = AudioManager();
 
   @override
   void initState() {
     super.initState();
-    // 1. ดึงข้อมูลผู้ใช้ปัจจุบัน
     _currentUser = _supabase.auth.currentUser;
 
-    // 2. ดักฟังการเปลี่ยนแปลง Auth (Login/Logout) เพื่อรีเฟรชหน้าจออัตโนมัติ
     _supabase.auth.onAuthStateChange.listen((data) {
       if (mounted) {
         setState(() {
           _currentUser = data.session?.user;
         });
       }
+    });
+
+    // [ADDED] โหลดค่าเสียงปัจจุบันมาแสดง
+    _loadAudioSettings();
+  }
+
+  void _loadAudioSettings() {
+    setState(() {
+      _isMuted = _audioManager.isMuted;
+      _musicVolume = _audioManager.musicVolume;
+      _sfxVolume = _audioManager.sfxVolume;
     });
   }
 
@@ -153,7 +167,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 if (!mounted) return;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TestScreen()),
+                  MaterialPageRoute(builder: (context) => const LobbyScreen()),
                 ).then((_) {
                   setState(() => _isPressed = false);
                 });
@@ -454,9 +468,13 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    // [UPDATED] คำนวณสถานะใหม่ และสั่งงาน AudioManager
+                    final newMuteState = !_isMuted;
+                    await _audioManager.toggleMute(newMuteState);
+
                     setState(() {
-                      _isMuted = !_isMuted;
+                      _isMuted = newMuteState;
                     });
                   },
                   child: AnimatedContainer(
@@ -530,16 +548,26 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           ),
           const SizedBox(height: 6),
+          
+          // [UPDATED] Music Slider เชื่อมต่อกับ _audioManager
           _buildVolumeSlider(
             label: "Music / BGM",
             value: _musicVolume,
-            onChanged: (val) => setState(() => _musicVolume = val),
+            onChanged: (val) {
+              setState(() => _musicVolume = val); // อัปเดต UI
+              _audioManager.setMusicVolume(val);  // อัปเดตเสียงจริง
+            },
           ),
           const SizedBox(height: 6),
+          
+          // [UPDATED] SFX Slider เชื่อมต่อกับ _audioManager
           _buildVolumeSlider(
             label: "Sound Effects / SFX",
             value: _sfxVolume,
-            onChanged: (val) => setState(() => _sfxVolume = val),
+            onChanged: (val) {
+              setState(() => _sfxVolume = val);   // อัปเดต UI
+              _audioManager.setSfxVolume(val);    // อัปเดตเสียงจริง
+            },
           ),
         ],
       ),

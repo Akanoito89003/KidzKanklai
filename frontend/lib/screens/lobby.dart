@@ -4,6 +4,7 @@ import 'package:flutter_application_1/api_service.dart';
 import 'package:flutter_application_1/widgets/bottom_navigation_bar.dart';
 import 'package:flutter_application_1/widgets/right_side_menu.dart';
 import 'package:flutter_application_1/widgets/custom_top_bar.dart';
+import 'package:flutter_application_1/widgets/character_widget.dart';
 
 class LobbyScreen extends StatefulWidget {
   final User? user;
@@ -37,7 +38,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       imagePath: "assets/images/item/Gasha.png",
       label: 'กล่องสุ่ม',
       onTap: () {
-        Navigator.pushNamed(context, '/lootbox');
+        Navigator.pushNamed(context, '/me');
       },
     ),
   ];
@@ -67,9 +68,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
               ),
 
               // Main Content
-              Expanded(
+              // Main Content
+              Expanded( // Added Expanded to fill remaining space
                 child: Stack(
+                  alignment: Alignment.center, // Center the character
                   children: [
+                    // Character Widget - อยู่ชั้นล่างสุด
+                    Positioned(
+                      bottom: -50, // Adjust position as needed
+                      child: CharacterWidget(
+                        height: 600, 
+                        width: 500,
+                        user: widget.user, // Pass User
+                      ),
+                    ),
+
                     // Right Side Menu Component
                     RightSideMenu(menuItems: _menuItems),
                   ],
