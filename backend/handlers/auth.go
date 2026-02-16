@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-	"backend/config"
+	"backend/configs"
 
 	"github.com/MicahParks/keyfunc/v2"
 	"github.com/gin-gonic/gin"
