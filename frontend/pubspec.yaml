@@ -33,6 +33,8 @@ dependencies:
   audioplayers: ^6.0.0       # สำหรับเล่นเสียงและคุมระดับเสียง
   shared_preferences: ^2.2.0 # (แนะนำ) สำหรับบันทึกค่าเสียงไว้ ไม่ให้หายตอนปิดแอป
 
+  rive: ^0.13.0  # (เวอร์ชันอาจเปลี่ยนได้ตามความเหมาะสม)
+  provider: ^6.0.0 # (จำเป็นสำหรับจัดการ State ท่าทาง)
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -78,7 +80,7 @@ flutter:
     - lib/assets/bt-hover-Back.png
     - lib/assets/BG.png
     - lib/assets/quest_1_icon.png
-
+    - assets/animation/
     - assets/images/
 
   # The following line ensures that the Material Icons font is

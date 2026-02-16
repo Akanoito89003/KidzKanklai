@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../config/rive_cache.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -18,6 +19,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     super.initState();
     _startAnimation();
+    _loadResources();
+  }
+
+  Future<void> _loadResources() async {
+    // 1. Load Rive File
+    await RiveCache().loadAsset('assets/animation/Model1110.riv');
+    
+    // 2. Add other preload logic here if needed (e.g. user data)
+    
+    // 3. Navigate to next screen
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/startgame'); 
+    }
   }
 
   /// Starts the periodic timer to animate the dots.

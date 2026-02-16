@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/api_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/login.dart';
 import 'screens/register.dart';
@@ -22,6 +23,8 @@ import 'screens/startgame.dart';
 import 'screens/loading.dart';
 import 'screens/test.dart';
 import 'screens/me.dart';
+import 'config/rive_cache.dart';
+import 'config/user_pose_provider.dart';
 
 
 Future<void> main() async {
@@ -31,11 +34,18 @@ Future<void> main() async {
     url: 'https://dregaeeryyqlfssejzbr.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRyZWdhZWVyeXlxbGZzc2VqemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0NjAzMzgsImV4cCI6MjA4NDAzNjMzOH0.QEyCrkki7K-RgaejMTdYsx-N-dt87Qi1LjJSZ4VFNLw',
     authOptions: const FlutterAuthClientOptions(
-      authFlowType: AuthFlowType.pkce, // 🔥 สำคัญสำหรับ Google OAuth
+      authFlowType: AuthFlowType.pkce,
     ),
   );
 
-  runApp(const KidzKanklaiApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserPoseProvider()),
+      ],
+      child: const KidzKanklaiApp(),
+    ),
+  );
 }
 
 class KidzKanklaiApp extends StatelessWidget {
@@ -44,6 +54,7 @@ class KidzKanklaiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // ... existing code ...
       title: 'KidzKanklai',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -52,11 +63,10 @@ class KidzKanklaiApp extends StatelessWidget {
         useMaterial3: true,
       ),
 
-      // ✅ ใช้ AuthGate เป็นหน้าแรก
-      home: const StartGameScreen(),
+      home: const LoadingScreen(),
       
       routes: {
-
+         // ... routes ...
         '/auth': (context) => const AuthGate(),
         '/me': (context) => const MeScreen(),
 
@@ -67,7 +77,6 @@ class KidzKanklaiApp extends StatelessWidget {
         '/resetpw': (context) => const ResetPWScreen(),
         '/lobby': (context) => LobbyScreen(),
         '/setting': (context) => const SettingScreen(),
-        // '/fashion': (context) => FashionScreen(user: User(id: 0, username: "Guest", email: "", level: 1, exp: 0, coins: 0, tickets: 0, vouchers: 0, bio: "", soundBGM: 50, soundSFX: 50, equippedSkin: "", equippedHair: "", equippedFace: "", statIntellect: 0, statStrength: 0, statCreativity: 0)),
         '/quest': (context) => const QuestScreen(),
         '/countdown': (context) => const CountdownScreen(),
         '/profile': (context) => const ProfileScreen(),
