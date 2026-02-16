@@ -31,7 +31,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       imagePath: "assets/images/icon/iconQuest.png",
       label: 'ภารกิจ',
       onTap: () {
-        Navigator.pushNamed(context, '/quest');
+        Navigator.pushNamed(context, '/createnormalquest');
       },
     ),
     MenuItem(

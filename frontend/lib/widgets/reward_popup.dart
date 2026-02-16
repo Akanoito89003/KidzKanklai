@@ -94,11 +94,28 @@ class _RewardPopupState extends State<RewardPopup>
             decoration: BoxDecoration(color: Colors.transparent),
             child: Stack(
               clipBehavior: Clip.none,
+              alignment: Alignment.center,
               children: [
+                Container(  
+                  width: 140,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.4),
+                        blurRadius: 100, // ยิ่งมากยิ่งฟุ้ง
+                        spreadRadius: 60,
+                      ),
+                    ],
+                  ),
+                ),
+
                 // Main Container
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  height: 200,
+                  height: 180,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -132,33 +149,40 @@ class _RewardPopupState extends State<RewardPopup>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: 20),
-
-                      // Reward Icon
-                      _buildRewardIcon(),
-
-                      SizedBox(height: 24),
-
-                      // Reward Text
+                      SizedBox(height: 9),
                       Text(
-                        _getRewardText(),
+                        'ได้รับรางวัล',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFFFFFFF),
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      SizedBox(height: 10),
 
-                      SizedBox(height: 24),
+                      // Reward Icon
+                      _buildRewardIcon(),
 
+                      SizedBox(height: 10),
+
+                      // Reward Text
+                      Text(
+                        _getRewardText(),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFFFFFFFF),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                       // Close Button (ไม่มีตาม Figma - ให้ tap ที่ไหนก็ได้)
                     ],
                   ),
                 ),
 
                 // Header Title
-                Positioned(top: -20, left: 0, right: 0, child: _buildHeader()),
+                Positioned(top: -60, left: 0, right: 0, child: _buildHeader()),
               ],
             ),
           ),
@@ -169,7 +193,7 @@ class _RewardPopupState extends State<RewardPopup>
 
   Widget _buildHeader() {
     return Positioned(
-      top: 0,
+      top: -60,
       left: 0,
       right: 0,
       child: Align(
@@ -179,25 +203,47 @@ class _RewardPopupState extends State<RewardPopup>
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Icon
-              Container(
-                width: 35,
-                height: 35,
-
-                child: Center(child: Text('⭐', style: TextStyle(fontSize: 20))),
+              Positioned(
+                left: 0,
+                bottom: 0,
+                child: Image.asset(
+                  'lib/assets/Star11.png',
+                  width: 26,
+                  height: 26,
+                  fit: BoxFit.contain,
+                ),
               ),
-              SizedBox(width: 12),
-              Text(
-                'รับรางวัลสำเร็จ',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  foreground: Paint()
-                    ..shader = LinearGradient(
-                      colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ).createShader(Rect.fromLTWH(0, 0, 200, 0)),
+              SizedBox(width: 4),
+              Positioned(
+                top: 0,
+                child: Center(
+                  child: Text(
+                    'รับรางวัลสำเร็จ',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      foreground: Paint()
+                        ..shader = const LinearGradient(
+                          colors: [
+                            Color(0xFFFFD700), // Gold
+                            Color(0xFFFFA500), // Orange
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ).createShader(const Rect.fromLTWH(0, 0, 200, 40)),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 4),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Image.asset(
+                  'lib/assets/Star11.png',
+                  width: 26,
+                  height: 26,
+                  fit: BoxFit.contain,
                 ),
               ),
             ],
