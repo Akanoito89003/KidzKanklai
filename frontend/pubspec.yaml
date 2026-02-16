@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  audioplayers: ^6.0.0       # สำหรับเล่นเสียงและคุมระดับเสียง
+  shared_preferences: ^2.2.0 # (แนะนำ) สำหรับบันทึกค่าเสียงไว้ ไม่ให้หายตอนปิดแอป
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
