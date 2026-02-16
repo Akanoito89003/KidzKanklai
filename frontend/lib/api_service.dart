@@ -68,13 +68,28 @@ class User {
 class InventoryItem {
   final String type;
   final String id;
+  final String name;
+  final String category;
+  final String imagePath;
+  final int riveId;
   
-  InventoryItem({required this.type, required this.id});
+  InventoryItem({
+    required this.type, 
+    required this.id,
+    this.name = '',
+    this.category = '',
+    this.imagePath = '',
+    this.riveId = 0,
+  });
 
   factory InventoryItem.fromJson(Map<String, dynamic> json) {
     return InventoryItem(
       type: json['type'] ?? '',
       id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      category: json['category'] ?? '',
+      imagePath: json['image_path'] ?? '',
+      riveId: json['rive_id'] ?? 0,
     );
   }
 }

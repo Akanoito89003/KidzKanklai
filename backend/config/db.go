@@ -12,7 +12,7 @@ import (
 var DB *pgx.Conn
 
 // [CHANGE] เปลี่ยนจาก Secret เป็น ProjectRef แทน
-var SupabaseProjectRef string 
+var SupabaseProjectRef string
 
 func ConnectDB() {
 	// 1. โหลด .env
