@@ -40,7 +40,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
         NotificationItem(
           id: '2',
-          imagePath: 'assets/images/achievement/iconAcheivement.png',
+          imagePath: 'assets/images/icon/iconAchievement.png',
           title: 'ปลดล็อกความสำเร็จใหม่',
           description:
               'ยินดีด้วย! คุณปลดล็อก "นักวางแผนมือใหม่" แล้ว อย่าลืมเข้าไปรับ...',

@@ -207,7 +207,7 @@ class _RewardPopupState extends State<RewardPopup>
                 left: 0,
                 bottom: 0,
                 child: Image.asset(
-                  'lib/assets/Star11.png',
+                  'assets/images/icon/Star11.png',
                   width: 26,
                   height: 26,
                   fit: BoxFit.contain,
@@ -240,7 +240,7 @@ class _RewardPopupState extends State<RewardPopup>
                 right: 0,
                 bottom: 0,
                 child: Image.asset(
-                  'lib/assets/Star11.png',
+                  'assets/images/icon/Star11.png',
                   width: 26,
                   height: 26,
                   fit: BoxFit.contain,
