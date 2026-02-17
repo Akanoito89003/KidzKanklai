@@ -63,6 +63,14 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/animation/
+    - assets/images/achievement/
+    - assets/images/background/
+    - assets/images/button/
+    - assets/images/design/
+    - assets/images/icon/
+    - assets/images/item/
+    - assets/images/profile/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

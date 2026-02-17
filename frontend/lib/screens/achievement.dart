@@ -28,7 +28,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       name: 'นักวางแผนมือใหม่',
       description:
           'รางวัลความสำเร็จของการเริ่มต้นวางแผนสิ่งที่ต้องทำด้วยตัวเองเป็นครั้งแรก',
-      imagePath: 'assets/images/achievement/achievement_1.png',
+      imagePath: 'assets/images/achievement/achievement1.png',
       isUnlocked: true,
       hasNotification: true,
       reward: AchievementReward(type: 'EXP', amount: 100),
@@ -38,7 +38,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '2',
       name: 'ผู้ท้าทายตัวเอง',
       description: 'ทำภารกิจยากสำเร็จ',
-      imagePath: 'assets/images/achievement/achievement_2.png',
+      imagePath: 'assets/images/achievement/achievement2.png',
       isUnlocked: true,
       hasNotification: true,
       reward: AchievementReward(type: 'EXP', amount: 100),
@@ -56,9 +56,9 @@ class _AchievementScreenState extends State<AchievementScreen> {
     ),
     Achievement(
       id: '4',
-      name: 'ผู้เชี่ยวชาญ',
-      description: 'ทำภารกิจทั้งหมดสำเร็จ',
-      imagePath: 'assets/images/achievement/achievement_4.png',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
+      imagePath: null,
       isUnlocked: false,
       hasNotification: false,
       reward: null,
@@ -76,18 +76,8 @@ class _AchievementScreenState extends State<AchievementScreen> {
     ),
     Achievement(
       id: '6',
-      name: 'ผู้พิชิตเวลา',
-      description: 'ทำภารกิจให้เสร็จภายในเวลาที่กำหนด',
-      imagePath: 'assets/images/achievement/achievement_6.png',
-      isUnlocked: true,
-      hasNotification: false,
-      reward: AchievementReward(type: 'EXP', amount: 200),
-      isClaimed: true,
-    ),
-    Achievement(
-      id: '7',
-      name: 'นักสำรวจ',
-      description: 'ค้นพบสถานที่ลับทั้งหมด',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
       imagePath: null,
       isUnlocked: false,
       hasNotification: false,
@@ -542,7 +532,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "lib/assets/EXP.png",
+                        "assets/images/item/EXP.png",
                         width: 40,
                         height: 40,
                         fit: BoxFit.contain,
@@ -572,7 +562,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                   top: 45,
                   right: -10,
                   child: Image.asset(
-                    'lib/assets/check.png',
+                    'assets/images/icon/check.png',
                     width: 28,
                     height: 28,
                     fit: BoxFit.contain,
@@ -594,30 +584,19 @@ class _AchievementScreenState extends State<AchievementScreen> {
         alignment: Alignment.topCenter,
         child: FractionalTranslation(
           translation: const Offset(0, -0.5),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF005395), Color(0xFF2374B5)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              // white border inside box
-              borderRadius: BorderRadius.circular(6),
-              border: Border.fromBorderSide(
-                BorderSide(color: Colors.white, width: 2),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // 🔹 รูปด้านหน้า
-                Image.asset(
-                  'assets/assets/icon/iconAchievement_icon.png',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.contain,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(80, 15, 30, 15),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF005395), Color(0xFF2374B5)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.white, width: 2),
                 ),
                 child: const Text(
                   "ความสำเร็จ",
@@ -635,7 +614,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                 left: 5,
                 top: 0,
                 child: Image.asset(
-                  'lib/assets/achievement_icon.png',
+                  'assets/images/icon/iconAchievement.png',
                   width: 70,
                   height: 70,
                   fit: BoxFit.contain,
