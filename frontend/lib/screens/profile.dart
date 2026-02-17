@@ -664,7 +664,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       children: [
         _buildBoxHeader(
-          iconPath: 'assets/images/icon/iconAcheivement.png',
+          iconPath: 'assets/images/icon/iconAchievement.png',
           title: "ความสำเร็จ 3/18",
         ),
         Container(

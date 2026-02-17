@@ -27,10 +27,10 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '1',
       name: 'นักวางแผนมือใหม่',
       description:
-          'ราชวิวความสำเร็จจบของการที่มีความมานับหมดที่ต้องทำหว้ามองเอียนแอปริเคชัน',
-      imagePath: 'assets/images/achievement/achievement_1.png',
+          'รางวัลความสำเร็จของการเริ่มต้นวางแผนสิ่งที่ต้องทำด้วยตัวเองเป็นครั้งแรก',
+      imagePath: 'assets/images/achievement/achievement1.png',
       isUnlocked: true,
-      hasNotification: false,
+      hasNotification: true,
       reward: AchievementReward(type: 'EXP', amount: 100),
       isClaimed: false,
     ),
@@ -38,7 +38,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
       id: '2',
       name: 'ผู้ท้าทายตัวเอง',
       description: 'ทำภารกิจยากสำเร็จ',
-      imagePath: 'assets/images/achievement/achievement_2.png',
+      imagePath: 'assets/images/achievement/achievement2.png',
       isUnlocked: true,
       hasNotification: true,
       reward: AchievementReward(type: 'EXP', amount: 100),
@@ -56,42 +56,42 @@ class _AchievementScreenState extends State<AchievementScreen> {
     ),
     Achievement(
       id: '4',
-      name: 'ผู้เชี่ยวชาญ',
-      description: 'ทำภารกิจทั้งหมดสำเร็จ',
-      imagePath: 'assets/images/achievement/achievement_4.png',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
+      imagePath: null,
       isUnlocked: false,
       hasNotification: false,
-      reward: AchievementReward(type: 'EXP', amount: 500),
+      reward: null,
       isClaimed: false,
     ),
     Achievement(
       id: '5',
-      name: 'นักสะสม',
-      description: 'สะสมไอเท็มครบทุกชิ้น',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
       imagePath: null,
       isUnlocked: false,
       hasNotification: false,
-      reward: AchievementReward(type: 'EXP', amount: 300),
+      reward: null,
       isClaimed: false,
     ),
     Achievement(
       id: '6',
-      name: 'ผู้พิชิตเวลา',
-      description: 'ทำภารกิจให้เสร็จภายในเวลาที่กำหนด',
-      imagePath: 'assets/images/achievement/achievement_6.png',
-      isUnlocked: true,
-      hasNotification: false,
-      reward: AchievementReward(type: 'EXP', amount: 200),
-      isClaimed: true,
-    ),
-    Achievement(
-      id: '7',
-      name: 'นักสำรวจ',
-      description: 'ค้นพบสถานที่ลับทั้งหมด',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
       imagePath: null,
       isUnlocked: false,
       hasNotification: false,
-      reward: AchievementReward(type: 'EXP', amount: 400),
+      reward: null,
+      isClaimed: false,
+    ),
+    Achievement(
+      id: '7',
+      name: 'ล็อคอยู่',
+      description: 'ยังไม่ปลดล็อค',
+      imagePath: null,
+      isUnlocked: false,
+      hasNotification: false,
+      reward: null,
       isClaimed: false,
     ),
   ];
@@ -122,8 +122,6 @@ class _AchievementScreenState extends State<AchievementScreen> {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 30),
-
                         Text(
                           'จำนวน 2/18',
                           style: TextStyle(
@@ -288,47 +286,49 @@ class _AchievementScreenState extends State<AchievementScreen> {
         });
       },
       child: Container(
-        margin: EdgeInsets.all(4),
+        margin: const EdgeInsets.all(4),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            // Achievement Circle
+            // OUTER CIRCLE (BORDER)
             Container(
-              width: 90,
-              height: 90,
+              padding: EdgeInsets.all(isExpanded ? 4 : 1), // ความหนาขอบ
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: achievement.isUnlocked
-                    ? Colors.white
-                    : Color(0xFFB3E5FC).withValues(alpha: 0.5),
-                border: Border.all(
-                  color: isExpanded
-                      ? Color(0xFF64B5F6)
-                      : Colors.white.withOpacity(0.8),
-                  width: isExpanded ? 3 : 2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: achievement.isUnlocked && achievement.imagePath != null
-                    ? ClipOval(
-                        child: Image.asset(
-                          achievement.imagePath!,
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return _buildLockedIcon();
-                          },
-                        ),
+                gradient: isExpanded
+                    ? const LinearGradient(
+                        colors: [Color(0xFFCEFFB2), Color(0xFF75C6EA)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                       )
-                    : _buildLockedIcon(),
+                    : null,
+              ),
+
+              // INNER CIRCLE (CONTENT)
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: achievement.isUnlocked
+                      ? Colors.white
+                      : const Color(0xFFC2E0E5),
+                ),
+                child: Center(
+                  child: achievement.isUnlocked && achievement.imagePath != null
+                      ? ClipOval(
+                          child: Image.asset(
+                            achievement.imagePath!,
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return _buildLockedIcon();
+                            },
+                          ),
+                        )
+                      : _buildLockedIcon(),
+                ),
               ),
             ),
 
@@ -342,7 +342,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                   height: 16,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFFE53935),
+                    color: const Color(0xFFE53935),
                     border: Border.all(color: Colors.white, width: 2),
                   ),
                 ),
@@ -449,11 +449,6 @@ class _AchievementScreenState extends State<AchievementScreen> {
                             ),
                           ),
                           SizedBox(width: 4),
-                          Icon(
-                            Icons.check_circle,
-                            color: Color(0xFF66BB6A),
-                            size: 14,
-                          ),
                         ],
                       ),
                     ],
@@ -466,18 +461,12 @@ class _AchievementScreenState extends State<AchievementScreen> {
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xFF66BB6A), Color(0xFF81C784)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF85D755), Color(0xFF34C759)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFF66BB6A).withOpacity(0.4),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
+                    border: Border.all(color: Colors.white, width: 1),
+                    borderRadius: BorderRadius.circular(100),
                   ),
                   child: ElevatedButton(
                     onPressed: () {
@@ -493,9 +482,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                           Navigator.of(context).pop();
                         },
                       );
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text('รับรางวัลแล้ว!')));
+                      
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
@@ -523,20 +510,65 @@ class _AchievementScreenState extends State<AchievementScreen> {
 
           // Already Claimed
           if (achievement.isClaimed)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                'รับรางวัลแล้ว',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade600,
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // กล่องรางวัล
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/item/EXP.png",
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.stars,
+                            size: 40,
+                            color: Color(0xFFFFA726),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '+${achievement.reward!.amount}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+
+                // check icon
+                Positioned(
+                  top: 45,
+                  right: -10,
+                  child: Image.asset(
+                    'assets/images/icon/check.png',
+                    width: 28,
+                    height: 28,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ],
             ),
         ],
       ),
@@ -552,46 +584,43 @@ class _AchievementScreenState extends State<AchievementScreen> {
         alignment: Alignment.topCenter,
         child: FractionalTranslation(
           translation: const Offset(0, -0.5),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF005395), Color(0xFF2374B5)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              // white border inside box
-              borderRadius: BorderRadius.circular(6),
-              border: Border.fromBorderSide(
-                BorderSide(color: Colors.white, width: 2),
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // 🔹 รูปด้านหน้า
-                Image.asset(
-                  'assets/assets/icon/iconAchievement_icon.png',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.contain,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(80, 15, 30, 15),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF005395), Color(0xFF2374B5)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.white, width: 2),
                 ),
-
-                const SizedBox(width: 12),
-
-                // 🔹 ข้อความ
-                const Text(
+                child: const Text(
                   "ความสำเร็จ",
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     height: 1.1,
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              // 🔹 รูปอยู่นอกกรอบ
+              Positioned(
+                left: 5,
+                top: 0,
+                child: Image.asset(
+                  'assets/images/icon/iconAchievement.png',
+                  width: 70,
+                  height: 70,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ],
           ),
         ),
       ),
