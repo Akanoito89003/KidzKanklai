@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/api_service.dart';
 
-import 'package:flutter_application_1/screens/test.dart';
+import 'package:flutter_application_1/widgets/custom_top_bar.dart';
+import 'package:flutter_application_1/screens/lobby.dart';
 
 class SettingLoginScreen extends StatefulWidget {
-  const SettingLoginScreen({super.key});
+  final User? user;
+  const SettingLoginScreen({super.key, this.user});
 
   @override
   State<SettingLoginScreen> createState() => _SettingLoginScreenState();
@@ -73,32 +76,37 @@ class _SettingLoginScreenState extends State<SettingLoginScreen> {
     );
   }
 
-  Widget _buildTopBar() {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
+ Widget _buildTopBar() {
+    return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Top Bar Black Box
           Container(
-            height: 75, // ปรับขนาด top bar
-            color: Colors.black.withOpacity(0.4),
+            child: CustomTopBar(
+              user: widget.user,
+              onNotificationTapped: () {
+                Navigator.pushNamed(context, '/notification');
+              },
+              onSettingsTapped: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
           ),
+
+          // Back Button
           Padding(
-            padding: const EdgeInsets.only(left: 20, top: 10), 
+            padding: const EdgeInsets.only(left: 20, top: 10),
             child: GestureDetector(
               onTapDown: (_) => setState(() => _isPressed = true),
-              onTapUp: (_) {}, 
+              onTapUp: (_) {},
               onTapCancel: () => setState(() => _isPressed = false),
               onTap: () async {
                 await Future.delayed(const Duration(milliseconds: 200));
                 if (!mounted) return;
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TestScreen()),
+                  MaterialPageRoute(builder: (context) => const LobbyScreen()),
                 ).then((_) {
                   setState(() => _isPressed = false);
                 });

@@ -8,7 +8,7 @@ import 'package:flutter_application_1/widgets/character_widget.dart';
 
 class LobbyScreen extends StatefulWidget {
   final User? user;
-  
+
   const LobbyScreen({Key? key, this.user}) : super(key: key);
 
   @override
@@ -69,7 +69,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
               // Main Content
               // Main Content
-              Expanded( // Added Expanded to fill remaining space
+              Expanded(
+                // Added Expanded to fill remaining space
                 child: Stack(
                   alignment: Alignment.center, // Center the character
                   children: [
@@ -77,7 +78,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
                     Positioned(
                       bottom: -50, // Adjust position as needed
                       child: CharacterWidget(
-                        height: 600, 
+                        height: 600,
                         width: 500,
                         user: widget.user, // Pass User
                       ),
@@ -90,32 +91,38 @@ class _LobbyScreenState extends State<LobbyScreen> {
               ),
 
               // Bottom Navigation
-              CustomBottomNavigationBar(
-                selectedIndex: _selectedIndex,
-                onItemTapped: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                avatarUrl: null,
-                playerLevel: widget.user?.level ?? 1,
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 20,
+                child: CustomBottomNavigationBar(
+                  selectedIndex: _selectedIndex,
+                  onItemTapped: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
 
-                // Navigation callbacks
-                onAvatarTapped: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
-                onFashionTapped: () {
-                  Navigator.pushNamed(context, '/fashion');
-                },
-                onRoomTapped: () {
-                  Navigator.pushNamed(context, '/lobby');
-                },
-                onMapTapped: () {
-                  Navigator.pushNamed(context, '/map');
-                },
-                onClubTapped: () {
-                  Navigator.pushNamed(context, '/club');
-                },
+                    switch (index) {
+                      case 0:
+                        Navigator.pushNamed(context, '/fashion');
+                        break;
+                      case 1:
+                        Navigator.pushNamed(context, '/lobby');
+                        break;
+                      case 2:
+                        Navigator.pushNamed(context, '/map');
+                        break;
+                      case 3:
+                        Navigator.pushNamed(context, '/club');
+                        break;
+                    }
+                  },
+                  avatarUrl: null,
+                  playerLevel: widget.user?.level ?? 1,
+                  onAvatarTapped: () {
+                    Navigator.pushNamed(context, '/profile');
+                  },
+                ),
               ),
             ],
           ),

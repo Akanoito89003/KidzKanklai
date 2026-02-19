@@ -115,7 +115,7 @@ class _CreateNormalQuestScreenState extends State<CreateNormalQuestScreen> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset("lib/assets/BG.png", fit: BoxFit.cover),
+            child: Image.asset("assets/images/background/bg1.png", fit: BoxFit.cover),
           ),
 
           // Main Content
@@ -213,8 +213,8 @@ class _CreateNormalQuestScreenState extends State<CreateNormalQuestScreen> {
               },
               child: Image.asset(
                 _isPressed
-                    ? 'lib/assets/bt-hover-Back.png'
-                    : 'lib/assets/bt-Back.png',
+                    ? 'assets/images/button/bt-hover-Back.png'
+                    : 'assets/images/button/bt-Back.png',
                 width: 50,
                 height: 50,
               ),
