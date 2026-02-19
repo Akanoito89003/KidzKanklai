@@ -9,7 +9,6 @@ import 'screens/register.dart';
 import 'screens/forgotpw.dart';
 import 'screens/resetpw.dart';
 import 'screens/lobby.dart';
-import 'screens/fashion_screen.dart';
 import 'screens/quest_screen.dart';
 import 'screens/countdown_screen.dart';
 import 'screens/profile.dart';
@@ -22,6 +21,7 @@ import 'screens/setting.dart';
 import 'screens/startgame.dart';
 import 'screens/loading.dart';
 import 'screens/me.dart';
+import 'screens/fashion.dart';
 import 'screens/create_normal_quest.dart';
 import 'config/rive_cache.dart';
 import 'config/user_pose_provider.dart';
@@ -39,6 +39,13 @@ Future<void> main() async {
       authFlowType: AuthFlowType.pkce,
     ),
   );
+
+  // Restore Token if session exists
+  final session = Supabase.instance.client.auth.currentSession;
+  if (session != null) {
+    ApiService.authToken = session.accessToken;
+    print("Restore Token: ${session.accessToken.substring(0, 10)}...");
+  }
 
   runApp(
     MultiProvider(
@@ -83,6 +90,7 @@ class KidzKanklaiApp extends StatelessWidget {
         '/forgotpw': (context) => const ForgotPWScreen(),
         '/resetpw': (context) => const ResetPWScreen(),
         '/lobby': (context) => LobbyScreen(),
+        '/fashion': (context) => const FashionPage(), // Add Fashion Route
         '/setting': (context) => const SettingScreen(),
         '/quest': (context) => const QuestScreen(),
         '/createnormalquest': (context) => CreateNormalQuestScreen(
