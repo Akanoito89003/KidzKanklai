@@ -26,10 +26,12 @@ import 'screens/me.dart';
 import 'screens/create_normal_quest.dart';
 import 'config/rive_cache.dart';
 import 'config/user_pose_provider.dart';
-
+import 'services/audio_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await AudioManager().init();
 
   await Supabase.initialize(
     url: 'https://dregaeeryyqlfssejzbr.supabase.co',
@@ -49,13 +51,16 @@ Future<void> main() async {
   );
 }
 
+// สร้างตัวแปร Global เป็น Observer ตัวใหม่ของเรา
+final MusicRouteObserver musicObserver = MusicRouteObserver();
+
 class KidzKanklaiApp extends StatelessWidget {
   const KidzKanklaiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // ... existing code ...
+
       title: 'KidzKanklai',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -63,6 +68,9 @@ class KidzKanklaiApp extends StatelessWidget {
         textTheme: GoogleFonts.kanitTextTheme(),
         useMaterial3: true,
       ),
+
+      // ลงทะเบียน Observer ของเรา
+      navigatorObservers: [musicObserver],
 
       home: const LoadingScreen(),
       
@@ -129,6 +137,7 @@ class AuthGate extends StatelessWidget {
 
         if (session != null) {
           // ✅ login แล้ว
+          AudioManager().playBGM('lobby.mp3');
           return const LobbyScreen();
         } else {
           // ❌ ยังไม่ login

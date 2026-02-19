@@ -38,7 +38,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       imagePath: "assets/images/item/Gasha.png",
       label: 'กล่องสุ่ม',
       onTap: () {
-        Navigator.pushNamed(context, '/me');
+        Navigator.pushNamed(context, '/gasha');
       },
     ),
   ];
