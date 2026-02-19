@@ -153,7 +153,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: 20,
             child: CustomBottomNavigationBar(
               selectedIndex: _selectedIndex,
               onItemTapped: (index) {
@@ -176,8 +176,6 @@ class _AchievementScreenState extends State<AchievementScreen> {
                     break;
                 }
               },
-              avatarUrl: null,
-              playerLevel: widget.user?.level ?? 1,
               onAvatarTapped: () {
                 Navigator.pushNamed(context, '/profile');
               },
@@ -222,17 +220,12 @@ class _AchievementScreenState extends State<AchievementScreen> {
   }
 
   Widget _buildTopBar() {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
+    return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: 75,
-            color: Colors.black.withOpacity(0.4),
             child: CustomTopBar(
               user: widget.user,
               onNotificationTapped: () {

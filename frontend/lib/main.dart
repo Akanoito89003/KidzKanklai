@@ -21,7 +21,6 @@ import 'screens/club_screen.dart';
 import 'screens/setting.dart';
 import 'screens/startgame.dart';
 import 'screens/loading.dart';
-import 'screens/test.dart';
 import 'screens/me.dart';
 import 'screens/create_normal_quest.dart';
 import 'config/rive_cache.dart';
@@ -79,7 +78,6 @@ class KidzKanklaiApp extends StatelessWidget {
         '/auth': (context) => const AuthGate(),
         '/me': (context) => const MeScreen(),
 
-        '/test': (context) => const TestScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/forgotpw': (context) => const ForgotPWScreen(),
