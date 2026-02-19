@@ -153,32 +153,35 @@ class _AchievementScreenState extends State<AchievementScreen> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 20,
-            child: CustomBottomNavigationBar(
-              selectedIndex: _selectedIndex,
-              onItemTapped: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
+            bottom: 0, // ให้ติดขอบล่างของ SafeArea
+            child: SafeArea( // ✅ เพิ่ม SafeArea ครอบเอาไว้
+              top: false, // ป้องกันแค่ด้านล่าง ด้านบนไม่ต้อง
+              child: CustomBottomNavigationBar(
+                selectedIndex: _selectedIndex,
+                onItemTapped: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
 
-                switch (index) {
-                  case 0:
-                    Navigator.pushNamed(context, '/fashion');
-                    break;
-                  case 1:
-                    Navigator.pushNamed(context, '/lobby');
-                    break;
-                  case 2:
-                    Navigator.pushNamed(context, '/map');
-                    break;
-                  case 3:
-                    Navigator.pushNamed(context, '/club');
-                    break;
-                }
-              },
-              onAvatarTapped: () {
-                Navigator.pushNamed(context, '/profile');
-              },
+                  switch (index) {
+                    case 0:
+                      Navigator.pushNamed(context, '/fashion');
+                      break;
+                    case 1:
+                      Navigator.pushNamed(context, '/lobby');
+                      break;
+                    case 2:
+                      Navigator.pushNamed(context, '/map');
+                      break;
+                    case 3:
+                      Navigator.pushNamed(context, '/club');
+                      break;
+                  }
+                },
+                onAvatarTapped: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+              ),
             ),
           ),
         ],
